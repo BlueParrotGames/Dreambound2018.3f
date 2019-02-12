@@ -9,6 +9,7 @@ public class CamController : MonoBehaviour
     [SerializeField] Transform player;
     [Header("Attributes")]
     [SerializeField] Vector3 offset;
+    [SerializeField] bool useLocal;
 
     private void Start()
     {
@@ -20,7 +21,11 @@ public class CamController : MonoBehaviour
 
     private void LateUpdate()
     {
-        cam.position = player.position + offset;
+        if (useLocal)
+            cam.localPosition = player.localPosition + offset;
+        else
+            cam.position = player.position + offset;
+
         cam.transform.LookAt(player);
     }
 }
