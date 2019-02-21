@@ -185,8 +185,6 @@ Shader "Custom/GrassThiccDir"
 			fixed4 col = i.grassLeafColor;
 			return col;
 		}
-
-
 			ENDCG
 		}
 		}
