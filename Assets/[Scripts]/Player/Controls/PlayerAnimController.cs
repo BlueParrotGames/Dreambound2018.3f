@@ -26,6 +26,17 @@ public class PlayerAnimController : MonoBehaviour
                 {
                     anim.SetBool("Idle", false);
                     anim.SetBool("Combat", true);
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        anim.SetTrigger("Slash1");
+                    }
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        anim.SetTrigger("Cast1");
+                        castHand.StartCast();
+                    }
+
                     break;
                 }
             case CombatState.IDLE:
@@ -36,14 +47,6 @@ public class PlayerAnimController : MonoBehaviour
                 }
         }
 
-        if(Input.GetMouseButtonDown(0))
-        {
-            anim.SetTrigger("Slash1");
-        }
-        if(Input.GetMouseButtonDown(1))
-        {
-            anim.SetTrigger("Cast1");
-            castHand.StartCast();
-        }
+
     }
 }
