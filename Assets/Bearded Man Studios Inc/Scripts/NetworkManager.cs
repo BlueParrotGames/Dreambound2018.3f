@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+
 namespace BeardedManStudios.Forge.Networking.Unity
 {
 	public partial class NetworkManager : MonoBehaviour

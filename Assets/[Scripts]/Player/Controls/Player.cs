@@ -8,6 +8,9 @@ using BeardedManStudios.Forge.Networking;
 [RequireComponent(typeof(CharacterController))]
 public class Player : PlayerBehavior
 {
+    public enum CombatState { IDLE, COMBAT }
+    public CombatState combatState;
+
     CharacterController characterController;
     Animator anim;
 
@@ -55,6 +58,7 @@ public class Player : PlayerBehavior
     {
         if (networkObject.IsOwner)
         {
+            #region --------------------Movement
             if (characterController.isGrounded)
             {
                 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -76,11 +80,14 @@ public class Player : PlayerBehavior
             dir.y -= gravity * Time.deltaTime;
             characterController.Move(dir * Time.deltaTime);
 
-            if(Input.GetMouseButtonUp(0))
+            #endregion
+
+            if (Input.GetMouseButtonUp(0))
             {
                 networkObject.SendRpc(RPC_SEND_ANIM_TRIGGER, Receivers.All, "Slash1");
             }
 
+            #region --------------------Scrolling
             float scrollValue = Input.GetAxis("Mouse ScrollWheel");
             if (scrollValue != 0)
             {
@@ -93,28 +100,52 @@ public class Player : PlayerBehavior
                                                 Mathf.Clamp(playerCam.transform.localPosition.z, -5.5f, -2.1f));
             }
 
+            #endregion
+
             anim.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
             anim.SetFloat("Vertical", Input.GetAxis("Vertical"));
 
-            #region Network Assign
+            #region --------------------Networking
             networkObject.position = transform.position;
             networkObject.rotation = transform.rotation;
 
             networkObject.animhor = anim.GetFloat("Horizontal");
             networkObject.animvert = anim.GetFloat("Vertical");
+
+            networkObject.animstate = (int)combatState;
             #endregion
         }
         else if (!networkObject.IsOwner)
         {
-
             // Gathering position and rotation from the network
             transform.position = networkObject.position;
             transform.rotation = networkObject.rotation;
 
             anim.SetFloat("Horizontal", networkObject.animhor);
             anim.SetFloat("Vertical", networkObject.animvert);
+
+            combatState = (CombatState)networkObject.animstate;
             return;
         }
+    }
+
+    public void TriggerCombat()
+    {
+        if(networkObject.IsOwner)
+        {
+            combatState = (CombatState)1;
+        }
+    }
+
+    public void AbandonCombat()
+    {
+        // temporare function
+
+        if (networkObject.IsOwner)
+        {
+            combatState = (CombatState)0;
+        }
+
     }
 
     public override void SetPlayerName(RpcArgs args)

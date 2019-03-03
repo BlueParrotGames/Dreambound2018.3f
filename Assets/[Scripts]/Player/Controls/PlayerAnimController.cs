@@ -36,7 +36,6 @@ public class PlayerAnimController : MonoBehaviour
                         anim.SetTrigger("Cast1");
                         castHand.StartCast();
                     }
-
                     break;
                 }
             case CombatState.IDLE:
