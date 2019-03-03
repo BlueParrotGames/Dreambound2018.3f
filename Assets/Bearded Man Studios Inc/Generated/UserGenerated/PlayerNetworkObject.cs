@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0.15,0.15]")]
+	[GeneratedInterpol("{\"inter\":[0.15,0.15,0.15,0.15]")]
 	public partial class PlayerNetworkObject : NetworkObject
 	{
 		public const int IDENTITY = 6;
@@ -75,6 +75,66 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (rotationChanged != null) rotationChanged(_rotation, timestep);
 			if (fieldAltered != null) fieldAltered("rotation", _rotation, timestep);
 		}
+		private float _animhor;
+		public event FieldEvent<float> animhorChanged;
+		public InterpolateFloat animhorInterpolation = new InterpolateFloat() { LerpT = 0.15f, Enabled = true };
+		public float animhor
+		{
+			get { return _animhor; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_animhor == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x4;
+				_animhor = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetanimhorDirty()
+		{
+			_dirtyFields[0] |= 0x4;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_animhor(ulong timestep)
+		{
+			if (animhorChanged != null) animhorChanged(_animhor, timestep);
+			if (fieldAltered != null) fieldAltered("animhor", _animhor, timestep);
+		}
+		private float _animvert;
+		public event FieldEvent<float> animvertChanged;
+		public InterpolateFloat animvertInterpolation = new InterpolateFloat() { LerpT = 0.15f, Enabled = true };
+		public float animvert
+		{
+			get { return _animvert; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_animvert == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x8;
+				_animvert = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetanimvertDirty()
+		{
+			_dirtyFields[0] |= 0x8;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_animvert(ulong timestep)
+		{
+			if (animvertChanged != null) animvertChanged(_animvert, timestep);
+			if (fieldAltered != null) fieldAltered("animvert", _animvert, timestep);
+		}
 
 		protected override void OwnershipChanged()
 		{
@@ -86,6 +146,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		{
 			positionInterpolation.current = positionInterpolation.target;
 			rotationInterpolation.current = rotationInterpolation.target;
+			animhorInterpolation.current = animhorInterpolation.target;
+			animvertInterpolation.current = animvertInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
@@ -94,6 +156,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		{
 			UnityObjectMapper.Instance.MapBytes(data, _position);
 			UnityObjectMapper.Instance.MapBytes(data, _rotation);
+			UnityObjectMapper.Instance.MapBytes(data, _animhor);
+			UnityObjectMapper.Instance.MapBytes(data, _animvert);
 
 			return data;
 		}
@@ -108,6 +172,14 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			rotationInterpolation.current = _rotation;
 			rotationInterpolation.target = _rotation;
 			RunChange_rotation(timestep);
+			_animhor = UnityObjectMapper.Instance.Map<float>(payload);
+			animhorInterpolation.current = _animhor;
+			animhorInterpolation.target = _animhor;
+			RunChange_animhor(timestep);
+			_animvert = UnityObjectMapper.Instance.Map<float>(payload);
+			animvertInterpolation.current = _animvert;
+			animvertInterpolation.target = _animvert;
+			RunChange_animvert(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -119,6 +191,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _position);
 			if ((0x2 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _rotation);
+			if ((0x4 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _animhor);
+			if ((0x8 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _animvert);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -161,6 +237,32 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					RunChange_rotation(timestep);
 				}
 			}
+			if ((0x4 & readDirtyFlags[0]) != 0)
+			{
+				if (animhorInterpolation.Enabled)
+				{
+					animhorInterpolation.target = UnityObjectMapper.Instance.Map<float>(data);
+					animhorInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_animhor = UnityObjectMapper.Instance.Map<float>(data);
+					RunChange_animhor(timestep);
+				}
+			}
+			if ((0x8 & readDirtyFlags[0]) != 0)
+			{
+				if (animvertInterpolation.Enabled)
+				{
+					animvertInterpolation.target = UnityObjectMapper.Instance.Map<float>(data);
+					animvertInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_animvert = UnityObjectMapper.Instance.Map<float>(data);
+					RunChange_animvert(timestep);
+				}
+			}
 		}
 
 		public override void InterpolateUpdate()
@@ -177,6 +279,16 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			{
 				_rotation = (Quaternion)rotationInterpolation.Interpolate();
 				//RunChange_rotation(rotationInterpolation.Timestep);
+			}
+			if (animhorInterpolation.Enabled && !animhorInterpolation.current.UnityNear(animhorInterpolation.target, 0.0015f))
+			{
+				_animhor = (float)animhorInterpolation.Interpolate();
+				//RunChange_animhor(animhorInterpolation.Timestep);
+			}
+			if (animvertInterpolation.Enabled && !animvertInterpolation.current.UnityNear(animvertInterpolation.target, 0.0015f))
+			{
+				_animvert = (float)animvertInterpolation.Interpolate();
+				//RunChange_animvert(animvertInterpolation.Timestep);
 			}
 		}
 

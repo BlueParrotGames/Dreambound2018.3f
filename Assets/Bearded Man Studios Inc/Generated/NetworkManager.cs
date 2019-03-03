@@ -11,7 +11,7 @@ namespace BeardedManStudios.Forge.Networking.Unity
 		private BMSByte metadata = new BMSByte();
 
 		public GameObject[] CubeForgeGameNetworkObject = null;
-		public GameObject[] DreamboundNetNetworkObject = null;
+		public GameObject[] DreamNetNetworkObject = null;
 		public GameObject[] ExampleProximityPlayerNetworkObject = null;
 		public GameObject[] ForgeNetworkingTestNetworkObject = null;
 		public GameObject[] NetworkCameraNetworkObject = null;
@@ -56,17 +56,17 @@ namespace BeardedManStudios.Forge.Networking.Unity
 						objectInitialized(newObj, obj);
 				});
 			}
-			else if (obj is DreamboundNetNetworkObject)
+			else if (obj is DreamNetNetworkObject)
 			{
 				MainThreadManager.Run(() =>
 				{
 					NetworkBehavior newObj = null;
 					if (!NetworkBehavior.skipAttachIds.TryGetValue(obj.NetworkId, out newObj))
 					{
-						if (DreamboundNetNetworkObject.Length > 0 && DreamboundNetNetworkObject[obj.CreateCode] != null)
+						if (DreamNetNetworkObject.Length > 0 && DreamNetNetworkObject[obj.CreateCode] != null)
 						{
-							var go = Instantiate(DreamboundNetNetworkObject[obj.CreateCode]);
-							newObj = go.GetComponent<DreamboundNetBehavior>();
+							var go = Instantiate(DreamNetNetworkObject[obj.CreateCode]);
+							newObj = go.GetComponent<DreamNetBehavior>();
 						}
 					}
 
@@ -193,13 +193,13 @@ namespace BeardedManStudios.Forge.Networking.Unity
 			
 			return netBehavior;
 		}
-		[Obsolete("Use InstantiateDreamboundNet instead, its shorter and easier to type out ;)")]
-		public DreamboundNetBehavior InstantiateDreamboundNetNetworkObject(int index = 0, Vector3? position = null, Quaternion? rotation = null, bool sendTransform = true)
+		[Obsolete("Use InstantiateDreamNet instead, its shorter and easier to type out ;)")]
+		public DreamNetBehavior InstantiateDreamNetNetworkObject(int index = 0, Vector3? position = null, Quaternion? rotation = null, bool sendTransform = true)
 		{
-			var go = Instantiate(DreamboundNetNetworkObject[index]);
-			var netBehavior = go.GetComponent<DreamboundNetBehavior>();
+			var go = Instantiate(DreamNetNetworkObject[index]);
+			var netBehavior = go.GetComponent<DreamNetBehavior>();
 			var obj = netBehavior.CreateNetworkObject(Networker, index);
-			go.GetComponent<DreamboundNetBehavior>().networkObject = (DreamboundNetNetworkObject)obj;
+			go.GetComponent<DreamNetBehavior>().networkObject = (DreamNetNetworkObject)obj;
 
 			FinalizeInitialization(go, netBehavior, obj, position, rotation, sendTransform);
 			
@@ -295,10 +295,10 @@ namespace BeardedManStudios.Forge.Networking.Unity
 			
 			return netBehavior;
 		}
-		public DreamboundNetBehavior InstantiateDreamboundNet(int index = 0, Vector3? position = null, Quaternion? rotation = null, bool sendTransform = true)
+		public DreamNetBehavior InstantiateDreamNet(int index = 0, Vector3? position = null, Quaternion? rotation = null, bool sendTransform = true)
 		{
-			var go = Instantiate(DreamboundNetNetworkObject[index]);
-			var netBehavior = go.GetComponent<DreamboundNetBehavior>();
+			var go = Instantiate(DreamNetNetworkObject[index]);
+			var netBehavior = go.GetComponent<DreamNetBehavior>();
 
 			NetworkObject obj = null;
 			if (!sendTransform && position == null && rotation == null)
@@ -330,7 +330,7 @@ namespace BeardedManStudios.Forge.Networking.Unity
 				obj = netBehavior.CreateNetworkObject(Networker, index, metadata.CompressBytes());
 			}
 
-			go.GetComponent<DreamboundNetBehavior>().networkObject = (DreamboundNetNetworkObject)obj;
+			go.GetComponent<DreamNetBehavior>().networkObject = (DreamNetNetworkObject)obj;
 
 			FinalizeInitialization(go, netBehavior, obj, position, rotation, sendTransform);
 			

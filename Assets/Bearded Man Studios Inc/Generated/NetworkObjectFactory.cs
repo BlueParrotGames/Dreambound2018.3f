@@ -27,9 +27,9 @@ namespace BeardedManStudios.Forge.Networking.Generated
 						availableCallback = true;
 						obj = new CubeForgeGameNetworkObject(networker, id, frame);
 						break;
-					case DreamboundNetNetworkObject.IDENTITY:
+					case DreamNetNetworkObject.IDENTITY:
 						availableCallback = true;
-						obj = new DreamboundNetNetworkObject(networker, id, frame);
+						obj = new DreamNetNetworkObject(networker, id, frame);
 						break;
 					case ExampleProximityPlayerNetworkObject.IDENTITY:
 						availableCallback = true;
