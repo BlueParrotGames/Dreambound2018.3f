@@ -49100,14 +49100,13 @@ MonoBehaviour:
     username: 
     email: 
     password: 
-  leftHand: {fileID: 0}
-  rightHand: {fileID: 0}
-  playerCam: {fileID: 131}
+  leftHand: {fileID: 204}
+  rightHand: {fileID: 191}
+  playerCam: {fileID: 226}
   playerOverhead: {fileID: 133}
   playerNameField: {fileID: 305}
   throwable: {fileID: 8013087008010246330, guid: f5d8854e41cbaf9489180e6c56eb55eb,
     type: 3}
-  potato: 0
 --- !u!1 &129
 GameObject:
   m_ObjectHideFlags: 0

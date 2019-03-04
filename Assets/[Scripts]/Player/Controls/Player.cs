@@ -14,6 +14,7 @@ public class Player : PlayerBehavior
     CharacterController characterController;
     Animator anim;
 
+    [SerializeField] Vector3 mousePos;
     private Vector3 dir;
     [Header("Player Settings")]
     [SerializeField] float moveSpeed = 6f;
@@ -27,14 +28,16 @@ public class Player : PlayerBehavior
     [SerializeField] Transform leftHand;
     [SerializeField] Transform rightHand;
     
-
     [Header("Objects")]
-    [SerializeField] GameObject playerCam;
+    [SerializeField] Camera playerCam;
     [SerializeField] GameObject playerOverhead;
     [SerializeField] TMPro.TMP_Text playerNameField;
 
     [Header("Player Items")]
     [SerializeField] Throwable throwable;
+
+    RaycastHit hit;
+    Ray ray;
    
     private void Start()
     {
@@ -51,12 +54,12 @@ public class Player : PlayerBehavior
 
         if (networkObject.IsOwner)
         {
-            playerCam.GetComponent<Camera>().enabled = true;
+            playerCam.enabled = true;
             networkObject.SendRpc(RPC_SET_PLAYER_NAME, Receivers.AllBuffered, PlayerPrefs.GetString("PlayerName"));
         }
         else
         {
-            playerCam.GetComponent<Camera>().enabled = false;
+            playerCam.enabled = false;
         }
     }
 
@@ -88,19 +91,22 @@ public class Player : PlayerBehavior
 
             #endregion
 
+            //Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
+            //Debug.DrawRay(ray, Vector3.down,);
+
             if (combatState == CombatState.COMBAT)
             {
+
                 if (Input.GetMouseButtonUp(0))
                 {
                     networkObject.SendRpc(RPC_SEND_ANIM_TRIGGER, Receivers.All, "Slash1");
                 }
                 if (Input.GetMouseButtonUp(1))
                 {
-                    NetworkManager.Instance.InstantiateNetThrowables(throwable.netSpawnIndex);
+                    networkObject.SendRpc(RPC_SEND_ANIM_TRIGGER, Receivers.All, "Throw");
                 }
             }
-           
-
+            
             #region --------------------Scrolling
             float scrollValue = Input.GetAxis("Mouse ScrollWheel");
             if (scrollValue != 0)
@@ -143,6 +149,32 @@ public class Player : PlayerBehavior
             anim.SetInteger("animState", networkObject.animstate);
             return;
         }
+    }
+
+    private void FixedUpdate()
+    {
+        mousePos = Input.mousePosition;
+        mousePos.z = 50;
+        mousePos = playerCam.ScreenToWorldPoint(mousePos);
+    }
+
+    public void Launch()
+    {
+        Vector3 targetPos = new Vector3();
+        ray = playerCam.ScreenPointToRay(Input.mousePosition);
+
+        if(Physics.Raycast(ray, out hit))
+        {
+            targetPos = hit.point;
+        }
+
+
+        Debug.Log("Throw time!");
+
+        throwable = (Throwable)NetworkManager.Instance.InstantiateNetThrowables(throwable.netSpawnIndex, rightHand.position, Quaternion.identity, true);
+        ParabolicShoot p = throwable.GetComponent<ParabolicShoot>();
+        p.target = targetPos;
+        p.Launch();
     }
 
     public void TriggerCombat()

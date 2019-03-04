@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SnowParticle
   - Enemy
+  - Floor
   layers:
   - Default
   - TransparentFX

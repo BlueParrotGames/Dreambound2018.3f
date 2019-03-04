@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
         triggerColl = GetComponent<SphereCollider>();
         line.SetVertexCount(segments + 1);
         line.useWorldSpace = false;
+        line.loop = true;
 
         triggerColl.isTrigger = true;
         triggerColl.radius = combatRadius;
