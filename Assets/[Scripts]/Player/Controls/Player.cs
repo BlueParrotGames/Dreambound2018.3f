@@ -23,13 +23,19 @@ public class Player : PlayerBehavior
     [SerializeField] Vector2 scrollSpeed = new Vector2(2, 1);
     public LoginInfo playerInfo;
 
+    [Header("Rig")]
+    [SerializeField] Transform leftHand;
+    [SerializeField] Transform rightHand;
+    
 
     [Header("Objects")]
     [SerializeField] GameObject playerCam;
     [SerializeField] GameObject playerOverhead;
     [SerializeField] TMPro.TMP_Text playerNameField;
 
-
+    [Header("Player Items")]
+    [SerializeField] Throwable throwable;
+   
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -82,10 +88,18 @@ public class Player : PlayerBehavior
 
             #endregion
 
-            if (Input.GetMouseButtonUp(0))
+            if (combatState == CombatState.COMBAT)
             {
-                networkObject.SendRpc(RPC_SEND_ANIM_TRIGGER, Receivers.All, "Slash1");
+                if (Input.GetMouseButtonUp(0))
+                {
+                    networkObject.SendRpc(RPC_SEND_ANIM_TRIGGER, Receivers.All, "Slash1");
+                }
+                if (Input.GetMouseButtonUp(1))
+                {
+                    NetworkManager.Instance.InstantiateNetThrowables(throwable.netSpawnIndex);
+                }
             }
+           
 
             #region --------------------Scrolling
             float scrollValue = Input.GetAxis("Mouse ScrollWheel");
@@ -104,6 +118,7 @@ public class Player : PlayerBehavior
 
             anim.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
             anim.SetFloat("Vertical", Input.GetAxis("Vertical"));
+            anim.SetInteger("animState", (int)combatState);
 
             #region --------------------Networking
             networkObject.position = transform.position;
@@ -125,6 +140,7 @@ public class Player : PlayerBehavior
             anim.SetFloat("Vertical", networkObject.animvert);
 
             combatState = (CombatState)networkObject.animstate;
+            anim.SetInteger("animState", networkObject.animstate);
             return;
         }
     }
@@ -139,7 +155,7 @@ public class Player : PlayerBehavior
 
     public void AbandonCombat()
     {
-        // temporare function
+        // temporary function
 
         if (networkObject.IsOwner)
         {
