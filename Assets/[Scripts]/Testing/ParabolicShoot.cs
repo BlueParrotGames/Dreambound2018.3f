@@ -4,6 +4,8 @@ using UnityEngine;
 public class ParabolicShoot : MonoBehaviour
 {
 
+    [SerializeField] GameObject explosionVFX;
+
     public Vector3 target;                                         /* The target object to hit */
 
     public float _time = 3f;                                                    /* The time of the travel */
@@ -82,16 +84,16 @@ public class ParabolicShoot : MonoBehaviour
         // Calculation of the required velocity along each axis to hit the target from the current starting position as if the shot object were stopped 
         V0x = (X - X0) / t;
         V0z = (Z - Z0) / t;
-        V0y = (Y - Y0 + (0.4f * Mathf.Abs(Physics.gravity.magnitude) * Mathf.Pow(t, 2))) / t;
+        V0y = (Y - Y0 + (0.5f * Mathf.Abs(Physics.gravity.magnitude) * Mathf.Pow(t, 2))) / t;
 
         /* Subtraction of the current velocity of the shot object */
         V0x -= rb.velocity.x;
         V0y -= rb.velocity.y;
         V0z -= rb.velocity.z;
 
-        rb.AddForce(Vector3.right * V0x * 1.2f, ForceMode.VelocityChange);    // VelocityChange Add an instant velocity change to the rigidbody, applying an impulsive force, ignoring its mass.
+        rb.AddForce(Vector3.right * V0x, ForceMode.VelocityChange);    // VelocityChange Add an instant velocity change to the rigidbody, applying an impulsive force, ignoring its mass.
         rb.AddForce(Vector3.up * V0y, ForceMode.VelocityChange);
-        rb.AddForce(Vector3.forward * V0z * 1.2f, ForceMode.VelocityChange);
+        rb.AddForce(Vector3.forward * V0z, ForceMode.VelocityChange);
 
         _timeStartThrust = Time.time;
     }
@@ -100,7 +102,9 @@ public class ParabolicShoot : MonoBehaviour
     {
         if(shot && c.gameObject.CompareTag("Floor"))
         {
-            rb.drag = 1;
+            Instantiate(explosionVFX, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+            //rb.drag = 1;
         }
     }
 }

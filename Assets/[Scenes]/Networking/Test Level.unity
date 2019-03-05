@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.029734712, g: 0.14917892, b: 0.4091925, a: 1}
+  m_IndirectSpecularColor: {r: 0.029748302, g: 0.14919303, b: 0.4091921, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1619,7 +1619,6 @@ GameObject:
   - component: {fileID: 461175127}
   - component: {fileID: 461175126}
   - component: {fileID: 461175125}
-  - component: {fileID: 461175130}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Floor
@@ -12199,7 +12198,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 1
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -12229,19 +12228,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &461175130
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 461175124}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 50, y: 0.1, z: 50}
-  m_Center: {x: 0, y: -0.05, z: 0}
 --- !u!4 &490563195 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8302947113445926606, guid: b61f906008cab3949addd813005bfef7,
@@ -17614,7 +17600,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26518
+  m_Name: pb_Mesh60196
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -20027,7 +20013,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ec96e5d9b039b4cb7c16b7e92603be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1083509147}
+  explosionVFX: {fileID: 0}
+  target: {x: 0, y: 0, z: 0}
   _time: 1
   _startVelocity: {x: 0, y: 0.1, z: 0}
   speed: {x: 0, y: 0, z: 0}
