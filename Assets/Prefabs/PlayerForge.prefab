@@ -49090,6 +49090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combatState: 0
+  mousePos: {x: 0, y: 0, z: 0}
   moveSpeed: 5
   rotSpeed: 2
   jumpHeight: 8
@@ -49961,6 +49962,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 204}
     m_Modifications:
+    - target: {fileID: 1370538683, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
+      propertyPath: m_Name
+      value: shield (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370538683, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1370538684, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0083
@@ -50005,14 +50014,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -64.189
       objectReference: {fileID: 0}
-    - target: {fileID: 1370538683, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
-      propertyPath: m_Name
-      value: shield (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1370538683, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
 --- !u!4 &4071673748318396851 stripped
@@ -50028,6 +50029,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 191}
     m_Modifications:
+    - target: {fileID: 1643458240, guid: 283a2f8909bb456449ce05e2a7d5f5b9, type: 3}
+      propertyPath: m_Name
+      value: OldKnightSword
+      objectReference: {fileID: 0}
+    - target: {fileID: 1643458240, guid: 283a2f8909bb456449ce05e2a7d5f5b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1643458241, guid: 283a2f8909bb456449ce05e2a7d5f5b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0073
@@ -50071,14 +50080,6 @@ PrefabInstance:
     - target: {fileID: 1643458241, guid: 283a2f8909bb456449ce05e2a7d5f5b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 72.744
-      objectReference: {fileID: 0}
-    - target: {fileID: 1643458240, guid: 283a2f8909bb456449ce05e2a7d5f5b9, type: 3}
-      propertyPath: m_Name
-      value: OldKnightSword
-      objectReference: {fileID: 0}
-    - target: {fileID: 1643458240, guid: 283a2f8909bb456449ce05e2a7d5f5b9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1643458245, guid: 283a2f8909bb456449ce05e2a7d5f5b9, type: 3}
       propertyPath: floatiePrefab
