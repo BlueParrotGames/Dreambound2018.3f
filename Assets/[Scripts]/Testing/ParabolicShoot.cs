@@ -94,8 +94,8 @@ public class ParabolicShoot : NetThrowablesBehavior
     {
         if(shot && c.gameObject.CompareTag("Floor"))
         {
-            Instantiate(explosionVFX, transform.position, Quaternion.identity);
-            networkObject.Destroy();
+            networkObject.SendRpc(RPC_INSTANTIATE_V_F_X, Receivers.All);
+            //networkObject.Destroy();
             //rb.drag = 1;
         }
     }
@@ -153,5 +153,11 @@ public class ParabolicShoot : NetThrowablesBehavior
         rb.AddForce(Vector3.forward * V0z, ForceMode.VelocityChange);
 
         _timeStartThrust = Time.time;
+    }
+
+    public override void InstantiateVFX(RpcArgs args)
+    {
+        Instantiate(explosionVFX, transform.position, Quaternion.identity);
+        networkObject.Destroy();
     }
 }
