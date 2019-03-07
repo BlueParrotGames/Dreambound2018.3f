@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[]")]
-	[GeneratedRPCVariableNames("{\"types\":[]")]
+	[GeneratedRPC("{\"types\":[[\"Vector3\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"targetPos\"]]")]
 	public abstract partial class NetThrowablesBehavior : NetworkBehavior
 	{
+		public const byte RPC_NETWORK_LAUNCH = 0 + 5;
 		
 		public NetThrowablesNetworkObject networkObject = null;
 
@@ -21,6 +22,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
+			networkObject.RegisterRpc("NetworkLaunch", NetworkLaunch, typeof(Vector3));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -97,6 +99,11 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.SnapInterpolations();
 		}
 
+		/// <summary>
+		/// Arguments:
+		/// Vector3 targetPos
+		/// </summary>
+		public abstract void NetworkLaunch(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

@@ -152,7 +152,7 @@ ModelImporter:
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
@@ -162,8 +162,110 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask: []
-      maskType: 3
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Mesh
+        weight: 1
+      - path: Root
+        weight: 1
+      - path: Root/LeftUpLeg
+        weight: 1
+      - path: Root/LeftUpLeg/LeftLeg
+        weight: 1
+      - path: Root/LeftUpLeg/LeftLeg/LeftFoot
+        weight: 1
+      - path: Root/LeftUpLeg/LeftLeg/LeftFoot/LeftToeBase
+        weight: 1
+      - path: Root/LeftUpLeg/LeftLeg/LeftFoot/LeftToeBase/LeftToe_End
+        weight: 1
+      - path: Root/RightUpLeg
+        weight: 1
+      - path: Root/RightUpLeg/RightLeg
+        weight: 1
+      - path: Root/RightUpLeg/RightLeg/RightFoot
+        weight: 1
+      - path: Root/RightUpLeg/RightLeg/RightFoot/RightToeBase
+        weight: 1
+      - path: Root/RightUpLeg/RightLeg/RightFoot/RightToeBase/RightToe_End
+        weight: 1
+      - path: Root/Spine_Zero
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandIndex1
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandIndex1/LeftHandIndex2
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandIndex1/LeftHandIndex2/LeftHandIndex3
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandIndex1/LeftHandIndex2/LeftHandIndex3/LeftHandIndex4
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandMiddle1
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandMiddle1/LeftHandMiddle2
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandMiddle1/LeftHandMiddle2/LeftHandMiddle3
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandMiddle1/LeftHandMiddle2/LeftHandMiddle3/LeftHandMiddle4
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandThumb1
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandThumb1/LeftHandThumb2
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandThumb1/LeftHandThumb2/LeftHandThumb3
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/LeftShoulder/LeftArm/LeftForeArm/LeftHand/LeftHandThumb1/LeftHandThumb2/LeftHandThumb3/LeftHandThumb4
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/Neck
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/Neck/Head
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/Neck/Head/HeadTop_End
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandIndex1
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandIndex1/RightHandIndex2
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandIndex1/RightHandIndex2/RightHandIndex3
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandIndex1/RightHandIndex2/RightHandIndex3/RightHandIndex4
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandMiddle1
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandMiddle1/RightHandMiddle2
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandMiddle1/RightHandMiddle2/RightHandMiddle3
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandMiddle1/RightHandMiddle2/RightHandMiddle3/RightHandMiddle4
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandThumb1
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandThumb1/RightHandThumb2
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandThumb1/RightHandThumb2/RightHandThumb3
+        weight: 1
+      - path: Root/Spine_Zero/Spine_One/Spine_Two/RightShoulder/RightArm/RightForeArm/RightHand/RightHandThumb1/RightHandThumb2/RightHandThumb3/RightHandThumb4
+        weight: 1
+      maskType: 1
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     isReadable: 1

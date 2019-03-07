@@ -1,14 +1,60 @@
 fileFormatVersion: 2
-guid: 414ccc7a890348643b877ada37f42aeb
+guid: e63b083f8538fff4faa41d4c07d6aa7a
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2100000: lambert1
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: pCube1
+    100000: Chain1
+    100002: Chain2
+    100004: Chain3
+    100006: Chain4
+    100008: Chain5
+    100010: Chain6
+    100012: Chain7
+    100014: Chain8
+    100016: //RootNode
+    100018: Weight
+    400000: Chain1
+    400002: Chain2
+    400004: Chain3
+    400006: Chain4
+    400008: Chain5
+    400010: Chain6
+    400012: Chain7
+    400014: Chain8
+    400016: //RootNode
+    400018: Weight
+    2100000: Sword
+    2100002: Material.001
+    2300000: Chain1
+    2300002: Chain2
+    2300004: Chain3
+    2300006: Chain4
+    2300008: Chain5
+    2300010: Chain6
+    2300012: Chain7
+    2300014: Chain8
+    2300016: //RootNode
+    2300018: Weight
+    3300000: Chain1
+    3300002: Chain2
+    3300004: Chain3
+    3300006: Chain4
+    3300008: Chain5
+    3300010: Chain6
+    3300012: Chain7
+    3300014: Chain8
+    3300016: //RootNode
+    3300018: Weight
+    4300000: Flail handle
+    4300002: Chain1
+    4300004: Chain2
+    4300006: Chain3
+    4300008: Chain4
+    4300010: Chain5
+    4300012: Chain6
+    4300014: Chain7
+    4300016: Chain8
+    4300018: Weight
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -60,7 +106,7 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
     previousCalculatedGlobalScale: 1
     hasPreviousCalculatedGlobalScale: 0
   tangentSpace:

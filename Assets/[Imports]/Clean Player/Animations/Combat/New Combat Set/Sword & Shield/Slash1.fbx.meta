@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a67bbd4c2893af548a54b59c6d59a636
+guid: 5f537455af0b8e04b82c1c63c01d4af6
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -50,10 +50,10 @@ ModelImporter:
     100088: RightToeBase
     100090: RightUpLeg
     100092: Root
-    100094: Spine_One
-    100096: Spine_Two
-    100098: Spine_Zero
-    100100: //RootNode
+    100094: //RootNode
+    100096: Spine_One
+    100098: Spine_Two
+    100100: Spine_Zero
     400000: Head
     400002: HeadTop_End
     400004: LeftArm
@@ -101,18 +101,19 @@ ModelImporter:
     400088: RightToeBase
     400090: RightUpLeg
     400092: Root
-    400094: Spine_One
-    400096: Spine_Two
-    400098: Spine_Zero
-    400100: //RootNode
-    2100000: lambert1
+    400094: //RootNode
+    400096: Spine_One
+    400098: Spine_Two
+    400100: Spine_Zero
+    2100000: lambert2
     4300000: Mesh
-    7400000: SwordShield_Slash1
+    7400000: Sword Slash 1
     9500000: //RootNode
     13700000: Mesh
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -139,10 +140,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: SwordShield_Slash1
+      name: Sword Slash 1
       takeName: Take 001
       firstFrame: 0
-      lastFrame: 600
+      lastFrame: 152
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -153,10 +154,10 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000

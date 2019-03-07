@@ -34,7 +34,7 @@ public class Player : PlayerBehavior
     [SerializeField] TMPro.TMP_Text playerNameField;
 
     [Header("Player Items")]
-    [SerializeField] Throwable throwable;
+    [SerializeField] ParabolicShoot throwable;
 
     RaycastHit hit;
     Ray ray;
@@ -160,40 +160,38 @@ public class Player : PlayerBehavior
 
     public void Launch()
     {
-        Vector3 targetPos = new Vector3();
-        ray = playerCam.ScreenPointToRay(Input.mousePosition);
-
-        if(Physics.Raycast(ray, out hit))
+        if (networkObject.IsOwner)
         {
-            targetPos = hit.point;
+            throwable = (ParabolicShoot)NetworkManager.Instance.InstantiateNetThrowables(throwable.netSpawnIndex, rightHand.position, Quaternion.identity, true);
+
+            Vector3 targetPos = new Vector3();
+            ray = playerCam.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                targetPos = hit.point;
+            }
+
+            Debug.Log("Throw time!");
+            //replace with rpc
+            throwable.networkStarted += (NetworkBehavior behavior) =>
+            {
+                throwable.networkObject.SendRpc(NetThrowablesBehavior.RPC_NETWORK_LAUNCH, Receivers.All, targetPos);
+            };
         }
-
-
-        Debug.Log("Throw time!");
-
-        throwable = (Throwable)NetworkManager.Instance.InstantiateNetThrowables(throwable.netSpawnIndex, rightHand.position, Quaternion.identity, true);
-        ParabolicShoot p = throwable.GetComponent<ParabolicShoot>();
-        p.target = targetPos;
-        p.Launch();
     }
 
     public void TriggerCombat()
     {
         if(networkObject.IsOwner)
-        {
             combatState = (CombatState)1;
-        }
     }
 
     public void AbandonCombat()
     {
         // temporary function
-
         if (networkObject.IsOwner)
-        {
             combatState = (CombatState)0;
-        }
-
     }
 
     public override void SetPlayerName(RpcArgs args)
