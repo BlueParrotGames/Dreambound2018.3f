@@ -27,6 +27,7 @@ public class Player : PlayerBehavior
     [Header("Rig")]
     [SerializeField] Transform leftHand;
     [SerializeField] Transform rightHand;
+    [SerializeField] IKControl ikControl;
     
     [Header("Objects")]
     [SerializeField] Camera playerCam;
@@ -35,6 +36,7 @@ public class Player : PlayerBehavior
 
     [Header("Player Items")]
     [SerializeField] ParabolicShoot throwable;
+    Interactable interactable;
 
     RaycastHit hit;
     Ray ray;
@@ -42,9 +44,10 @@ public class Player : PlayerBehavior
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+        ikControl = GetComponent<IKControl>();
         anim = GetComponent<Animator>();
-        gravity = (Physics.gravity.y * 2) * -1;
 
+        gravity = (Physics.gravity.y * 2) * -1;
         playerOverhead.transform.LookAt(playerCam.transform);
     }
 
@@ -96,17 +99,46 @@ public class Player : PlayerBehavior
 
             if (combatState == CombatState.COMBAT)
             {
-
                 if (Input.GetMouseButtonUp(0))
                 {
                     networkObject.SendRpc(RPC_SEND_ANIM_TRIGGER, Receivers.All, "Slash1");
                 }
-                if (Input.GetMouseButtonUp(1))
+                if (Input.GetKeyDown(KeyCode.G))
                 {
                     networkObject.SendRpc(RPC_SEND_ANIM_TRIGGER, Receivers.All, "Throw");
                 }
+                //RemoveFocus();
             }
-            
+            else
+            {
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(ray, out hit, 100))
+                    {
+                        interactable = hit.collider.GetComponent<Interactable>();
+                        if (interactable != null)
+                        {
+                            if (Vector3.Distance(transform.position, interactable.interactableTransform.position) <= interactable.radius)
+                            {
+                                SetFocus();
+                            }
+                        }
+                    }
+                }
+
+                if(interactable != null)
+                {
+                    if (Vector3.Distance(transform.position, interactable.interactableTransform.position) >= interactable.radius)
+                    {
+                        RemoveFocus();
+                    }
+                }
+            }
+
             #region --------------------Scrolling
             float scrollValue = Input.GetAxis("Mouse ScrollWheel");
             if (scrollValue != 0)
@@ -125,6 +157,7 @@ public class Player : PlayerBehavior
             anim.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
             anim.SetFloat("Vertical", Input.GetAxis("Vertical"));
             anim.SetInteger("animState", (int)combatState);
+            anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), (float)combatState, 3f * Time.deltaTime));
 
             #region --------------------Networking
             networkObject.position = transform.position;
@@ -147,8 +180,25 @@ public class Player : PlayerBehavior
 
             combatState = (CombatState)networkObject.animstate;
             anim.SetInteger("animState", networkObject.animstate);
+            anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), (float)networkObject.animstate, 3f * Time.deltaTime));
             return;
         }
+    }
+
+    void SetFocus()
+    {
+        interactable.interacted = false;
+        ikControl.FocusOn(interactable.transform);
+        interactable.Interact();
+        Debug.Log("Interacting bitch");
+    }
+
+    void RemoveFocus()
+    {
+        interactable.interacted = false;
+        interactable = null;
+        ikControl.ResetFocus();
+        Debug.Log("No longer interacting");
     }
 
     private void FixedUpdate()

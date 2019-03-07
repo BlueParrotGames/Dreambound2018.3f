@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(fileName = "TextureData", menuName = "Generation/TextureData")]
 public class TextureData : UpdatableData {
 
 	const int textureSize = 512;

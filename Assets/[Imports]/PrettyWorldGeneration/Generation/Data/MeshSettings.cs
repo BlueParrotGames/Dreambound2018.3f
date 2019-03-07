@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(fileName = "MeshSettings", menuName = "Generation/MeshSettings")]
 public class MeshSettings : UpdatableData {
 
 	public const int numSupportedLODs = 5;

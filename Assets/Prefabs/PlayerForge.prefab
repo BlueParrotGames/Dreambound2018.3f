@@ -48981,6 +48981,7 @@ GameObject:
   - component: {fileID: 254}
   - component: {fileID: 304}
   - component: {fileID: 305}
+  - component: {fileID: 7637341345824865652}
   m_Layer: 0
   m_Name: PlayerForge
   m_TagString: Player
@@ -49062,6 +49063,7 @@ MonoBehaviour:
   rightHandTarget: {fileID: 0}
   leftHandTarget: {fileID: 0}
   lookTarget: {fileID: 219}
+  defaultTarget: {fileID: 219}
   handOffset: {x: 0, y: 0, z: -0.055}
 --- !u!114 &305
 MonoBehaviour:
@@ -49089,11 +49091,26 @@ MonoBehaviour:
     password: 
   leftHand: {fileID: 205}
   rightHand: {fileID: 192}
+  ikControl: {fileID: 0}
   playerCam: {fileID: 233}
   playerOverhead: {fileID: 130}
   playerNameField: {fileID: 311}
   throwable: {fileID: 5380294261443722375, guid: f5d8854e41cbaf9489180e6c56eb55eb,
     type: 3}
+--- !u!114 &7637341345824865652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06789e074c8940b49a0383c5f910f5e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
+  space: 20
 --- !u!1 &126
 GameObject:
   m_ObjectHideFlags: 0

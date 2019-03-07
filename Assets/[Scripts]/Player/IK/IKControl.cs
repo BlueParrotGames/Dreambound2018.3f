@@ -15,7 +15,8 @@ public class IKControl : MonoBehaviour
     [Space]
     [SerializeField] Transform rightHandTarget = null;
     [SerializeField] Transform leftHandTarget = null;
-    [SerializeField] Transform lookTarget = null;
+    public Transform lookTarget = null;
+    [SerializeField] Transform defaultTarget;
 
     [SerializeField] Vector3 handOffset;
 
@@ -61,5 +62,15 @@ public class IKControl : MonoBehaviour
                 animator.SetLookAtWeight(0);
             }
         }
+    }
+
+    public void FocusOn(Transform obj)
+    {
+        lookTarget = obj;
+    }
+
+    public void ResetFocus()
+    {
+        lookTarget = defaultTarget;
     }
 }
