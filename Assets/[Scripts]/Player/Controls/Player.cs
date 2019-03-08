@@ -37,6 +37,8 @@ public class Player : PlayerBehavior
     [Header("Player Items")]
     [SerializeField] ParabolicShoot throwable;
     Interactable interactable;
+    public CapsuleCollider clothCollider;
+
 
     RaycastHit hit;
     Ray ray;
@@ -59,6 +61,7 @@ public class Player : PlayerBehavior
         {
             playerCam.enabled = true;
             networkObject.SendRpc(RPC_SET_PLAYER_NAME, Receivers.AllBuffered, PlayerPrefs.GetString("PlayerName"));
+            WorldManager.instance.players.Add(this);
         }
         else
         {
