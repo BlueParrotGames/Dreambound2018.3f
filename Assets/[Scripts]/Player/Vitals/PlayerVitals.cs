@@ -8,36 +8,52 @@ public class PlayerVitals : MonoBehaviour
     /// This script assumes the player by default weighs around 80kg
     /// </summary>
 
-    public float bodyTemp = 37;         // Celsius
+    public float bodyTemp = 37;             // Celsius
     [SerializeField] float bodyTempLossRate = 0f;
 
-    public float calories = 2000;       // Calories
+    public float calories = 2000;           // Calories
     [SerializeField] float caloryLossRate = 0f;
 
-    public float heartRate = 80;          // Beats per minute
+    public float heartRate = 80;            // Beats per minute
 
-    public float hydration = 60000;       // Mililiter
+    public float hydration = 60000;         // Mililiter
     [SerializeField] float hydrationLossRate = 0f;
 
-    //public float fatigue;               // Percentages
+    //public float fatigue;                 // Percentages
 
-    public float insulation;            // Percentages
+    public float insulation;                // Percentages
+
+    [SerializeField] bool useSurvivalMechanics;
+
+    private float health = 100;
 
 
     private void Start()
     {
-        InvokeRepeating("HungerCalculation", 0, 1f);
-        InvokeRepeating("BodyTemperatureCalculation", 0, 1f);
-        InvokeRepeating("HydrationCalculation", 0, 1f);
+        if(useSurvivalMechanics)
+        {
+            InvokeRepeating("HydrationCalculation", 0, 1f);
+            InvokeRepeating("HungerCalculation", 0, 1f);
+            InvokeRepeating("BodyTemperatureCalculation", 0, 1f);
+        }
     }
 
     void Update()
     {
-        calories -= (caloryLossRate * Time.deltaTime);
-        bodyTemp -= (bodyTempLossRate * Time.deltaTime);
-        hydration -= (hydrationLossRate * Time.deltaTime);
+        if(useSurvivalMechanics)
+        {
+            calories -= (caloryLossRate * Time.deltaTime);
+            bodyTemp -= (bodyTempLossRate * Time.deltaTime);
+            hydration -= (hydrationLossRate * Time.deltaTime);
+        }
     }
 
+    public void Damage(float amount)
+    {
+        health -= amount;
+    }
+
+    #region --------------------Survival Vitals
     private void HungerCalculation()
     {
         Debug.Log("Updating hunger");
@@ -122,4 +138,6 @@ public class PlayerVitals : MonoBehaviour
 
         hydrationLossRate = a;
     }
+
+    #endregion
 }

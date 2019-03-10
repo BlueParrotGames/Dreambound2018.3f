@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0.15,0.15,0.15,0.15,0]")]
+	[GeneratedInterpol("{\"inter\":[0.15,0.15,0.15,0.15,0,0]")]
 	public partial class PlayerNetworkObject : NetworkObject
 	{
 		public const int IDENTITY = 3;
@@ -165,6 +165,36 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (animstateChanged != null) animstateChanged(_animstate, timestep);
 			if (fieldAltered != null) fieldAltered("animstate", _animstate, timestep);
 		}
+		private float _health;
+		public event FieldEvent<float> healthChanged;
+		public InterpolateFloat healthInterpolation = new InterpolateFloat() { LerpT = 0f, Enabled = false };
+		public float health
+		{
+			get { return _health; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_health == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x20;
+				_health = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SethealthDirty()
+		{
+			_dirtyFields[0] |= 0x20;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_health(ulong timestep)
+		{
+			if (healthChanged != null) healthChanged(_health, timestep);
+			if (fieldAltered != null) fieldAltered("health", _health, timestep);
+		}
 
 		protected override void OwnershipChanged()
 		{
@@ -179,6 +209,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			animhorInterpolation.current = animhorInterpolation.target;
 			animvertInterpolation.current = animvertInterpolation.target;
 			animstateInterpolation.current = animstateInterpolation.target;
+			healthInterpolation.current = healthInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
@@ -190,6 +221,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			UnityObjectMapper.Instance.MapBytes(data, _animhor);
 			UnityObjectMapper.Instance.MapBytes(data, _animvert);
 			UnityObjectMapper.Instance.MapBytes(data, _animstate);
+			UnityObjectMapper.Instance.MapBytes(data, _health);
 
 			return data;
 		}
@@ -216,6 +248,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			animstateInterpolation.current = _animstate;
 			animstateInterpolation.target = _animstate;
 			RunChange_animstate(timestep);
+			_health = UnityObjectMapper.Instance.Map<float>(payload);
+			healthInterpolation.current = _health;
+			healthInterpolation.target = _health;
+			RunChange_health(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -233,6 +269,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _animvert);
 			if ((0x10 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _animstate);
+			if ((0x20 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _health);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -314,6 +352,19 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					RunChange_animstate(timestep);
 				}
 			}
+			if ((0x20 & readDirtyFlags[0]) != 0)
+			{
+				if (healthInterpolation.Enabled)
+				{
+					healthInterpolation.target = UnityObjectMapper.Instance.Map<float>(data);
+					healthInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_health = UnityObjectMapper.Instance.Map<float>(data);
+					RunChange_health(timestep);
+				}
+			}
 		}
 
 		public override void InterpolateUpdate()
@@ -345,6 +396,11 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			{
 				_animstate = (int)animstateInterpolation.Interpolate();
 				//RunChange_animstate(animstateInterpolation.Timestep);
+			}
+			if (healthInterpolation.Enabled && !healthInterpolation.current.UnityNear(healthInterpolation.target, 0.0015f))
+			{
+				_health = (float)healthInterpolation.Interpolate();
+				//RunChange_health(healthInterpolation.Timestep);
 			}
 		}
 

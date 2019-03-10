@@ -16,7 +16,6 @@ public class DreamNet : DreamNetBehavior
 {
     public static DreamNet instance;
 
-
     [Header("Server Stuff")]
     [SerializeField] string masterServerIP = "127.0.0.1";
     [SerializeField] ushort masterServerPort = 15940;
@@ -103,10 +102,13 @@ public class DreamNet : DreamNetBehavior
         //NetworkManager.networkSceneLoaded unreliable
         SceneManager.activeSceneChanged += (Scene arg0, Scene arg1) =>
         {
-            Debug.Log("Switching scene");
-            PlayerBehavior player = NetworkManager.Instance.InstantiatePlayer(0, null, null, true);
-            player.GetComponent<Player>().playerInfo = loginInfo;
-
+            Debug.Log("Initiating game");
+            //.name should be new scene's name
+            if (SceneManager.GetActiveScene().name == "Town")
+            {
+                PlayerBehavior player = NetworkManager.Instance.InstantiatePlayer(0, null, null, true);
+                player.GetComponent<Player>().playerInfo = loginInfo;
+            }
         };
     }
 
@@ -134,9 +136,12 @@ public class DreamNet : DreamNetBehavior
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
                 SceneManager.activeSceneChanged += (Scene arg0, Scene arg1) =>
                 {
-                    Debug.Log("Switching scene");
-                    PlayerBehavior player = NetworkManager.Instance.InstantiatePlayer(0, null, null, true);
-                    player.GetComponent<Player>().playerInfo = loginInfo;
+                    Debug.Log("Initiating game");
+                    if (SceneManager.GetActiveScene().name == "Town")
+                    {
+                        PlayerBehavior player = NetworkManager.Instance.InstantiatePlayer(0, null, null, true);
+                        player.GetComponent<Player>().playerInfo = loginInfo;
+                    }
                 };
             });
         };

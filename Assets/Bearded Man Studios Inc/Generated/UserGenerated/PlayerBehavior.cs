@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"string\"][\"string\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"name\"][\"triggerID\"]]")]
+	[GeneratedRPC("{\"types\":[[\"string\"][\"string\"][]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"name\"][\"triggerID\"][]]")]
 	public abstract partial class PlayerBehavior : NetworkBehavior
 	{
 		public const byte RPC_SET_PLAYER_NAME = 0 + 5;
 		public const byte RPC_SEND_ANIM_TRIGGER = 1 + 5;
+		public const byte RPC_SUBSCRIBE_TO_WORLD_MANAGER = 2 + 5;
 		
 		public PlayerNetworkObject networkObject = null;
 
@@ -25,6 +26,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			base.SetupHelperRpcs(networkObject);
 			networkObject.RegisterRpc("SetPlayerName", SetPlayerName, typeof(string));
 			networkObject.RegisterRpc("SendAnimTrigger", SendAnimTrigger, typeof(string));
+			networkObject.RegisterRpc("SubscribeToWorldManager", SubscribeToWorldManager);
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -111,6 +113,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// string triggerID
 		/// </summary>
 		public abstract void SendAnimTrigger(RpcArgs args);
+		/// <summary>
+		/// Arguments:
+		/// </summary>
+		public abstract void SubscribeToWorldManager(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

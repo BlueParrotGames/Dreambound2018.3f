@@ -26,11 +26,12 @@ public class DisplaceSnow : MonoBehaviour
     {
         layerMask = LayerMask.GetMask("Ground");
         drawMaterial = new Material(drawShader);
-        SetMaterialRenderer();
+        //SetMaterialRenderer();
     }
 
     void SetMaterialRenderer()
     {
+        Debug.Log("Calling Set Material Renderer");
         baseMaterial = terrain.GetComponent<MeshRenderer>().material;
         if (baseMaterial.GetTexture("_Splat") == null)
         {
@@ -51,7 +52,7 @@ public class DisplaceSnow : MonoBehaviour
     void Update()
     {
         
-        if(Physics.Raycast(transform.position, -Vector3.up, out renderHit, 1f, layerMask))
+        if(Physics.Raycast(transform.position, -Vector3.up, out renderHit, 5f, layerMask))
         {
             if (renderHit.transform.gameObject == terrain)
             {

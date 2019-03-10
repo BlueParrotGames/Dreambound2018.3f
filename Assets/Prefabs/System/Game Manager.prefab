@@ -44,13 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe5b082a785e7641bf1a62b930a3f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CubeForgeGameNetworkObject: []
   DreamNetNetworkObject: []
-  ExampleProximityPlayerNetworkObject: []
-  ForgeNetworkingTestNetworkObject: []
-  NetworkCameraNetworkObject: []
+  NetThrowablesNetworkObject:
+  - {fileID: 8013087008010246333, guid: f5d8854e41cbaf9489180e6c56eb55eb, type: 3}
   PlayerNetworkObject:
-  - {fileID: 139, guid: 500ca8e65d572f14caab91cafc7b6a8f, type: 3}
+  - {fileID: 126, guid: 500ca8e65d572f14caab91cafc7b6a8f, type: 3}
   automaticScenes: 0
 --- !u!114 &447683412772187370
 MonoBehaviour:
@@ -66,7 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   masterServerIP: 127.0.0.1
   masterServerPort: 15940
-  serverIP: 178.84.28.2
+  serverIP: 127.0.0.1
   serverPort: 15937
   natServerIP: 178.84.28.2
   natServerPort: 15941
@@ -75,8 +73,7 @@ MonoBehaviour:
   type: whatever
   mode: ffa
   comment: Nice comment
-  useElo: 0
-  eloRequired: 0
+  useNAT: 0
   networkManager: {fileID: 447683412772187371}
   emailField: {fileID: 0}
   passField: {fileID: 0}

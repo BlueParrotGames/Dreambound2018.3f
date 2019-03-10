@@ -3709,16 +3709,6 @@ PrefabInstance:
       propertyPath: startButton
       value: 
       objectReference: {fileID: 1090236090}
-    - target: {fileID: 447683412772187370, guid: a66193382b459b242882f4966a2eb5a8,
-        type: 3}
-      propertyPath: useNAT
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447683412772187370, guid: a66193382b459b242882f4966a2eb5a8,
-        type: 3}
-      propertyPath: serverIP
-      value: 127.0.0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 447683413247612666, guid: a66193382b459b242882f4966a2eb5a8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3774,21 +3764,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 447683412772187371, guid: a66193382b459b242882f4966a2eb5a8,
-        type: 3}
-      propertyPath: NetThrowablesNetworkObject.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 447683412772187371, guid: a66193382b459b242882f4966a2eb5a8,
-        type: 3}
-      propertyPath: PlayerNetworkObject.Array.data[0]
-      value: 
-      objectReference: {fileID: 125, guid: 500ca8e65d572f14caab91cafc7b6a8f, type: 3}
-    - target: {fileID: 447683412772187371, guid: a66193382b459b242882f4966a2eb5a8,
-        type: 3}
-      propertyPath: NetThrowablesNetworkObject.Array.data[0]
-      value: 
-      objectReference: {fileID: 8013087008010246333, guid: f5d8854e41cbaf9489180e6c56eb55eb,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a66193382b459b242882f4966a2eb5a8, type: 3}

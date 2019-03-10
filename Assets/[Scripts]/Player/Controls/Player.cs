@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking.Unity;
 using BeardedManStudios.Forge.Networking;
@@ -36,21 +37,29 @@ public class Player : PlayerBehavior
 
     [Header("Player Items")]
     [SerializeField] ParabolicShoot throwable;
-    Interactable interactable;
+    //Interactable interactable;
     public CapsuleCollider clothCollider;
 
 
     RaycastHit hit;
     Ray ray;
-   
+
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
         characterController = GetComponent<CharacterController>();
         ikControl = GetComponent<IKControl>();
         anim = GetComponent<Animator>();
 
         gravity = (Physics.gravity.y * 2) * -1;
         playerOverhead.transform.LookAt(playerCam.transform);
+    }
+
+    public void ResetPosition()
+    {
+        Debug.Log("Resetting position!");
+        transform.position = Vector3.one;
+        //networkObject.position = Vector3.one;
     }
 
     protected override void NetworkStart()
@@ -61,7 +70,7 @@ public class Player : PlayerBehavior
         {
             playerCam.enabled = true;
             networkObject.SendRpc(RPC_SET_PLAYER_NAME, Receivers.AllBuffered, PlayerPrefs.GetString("PlayerName"));
-            WorldManager.instance.players.Add(this);
+            networkObject.SendRpc(RPC_SUBSCRIBE_TO_WORLD_MANAGER, Receivers.AllBuffered);
         }
         else
         {
@@ -71,6 +80,7 @@ public class Player : PlayerBehavior
 
     void Update()
     {
+        //Debug.Log(transform.position);
         if (networkObject.IsOwner)
         {
             #region --------------------Movement
@@ -122,24 +132,24 @@ public class Player : PlayerBehavior
 
                     if (Physics.Raycast(ray, out hit, 100))
                     {
-                        interactable = hit.collider.GetComponent<Interactable>();
-                        if (interactable != null)
-                        {
-                            if (Vector3.Distance(transform.position, interactable.interactableTransform.position) <= interactable.radius)
-                            {
-                                SetFocus();
-                            }
-                        }
+                        //interactable = hit.collider.GetComponent<Interactable>();
+                        //if (interactable != null)
+                        //{
+                        //    if (Vector3.Distance(transform.position, interactable.interactableTransform.position) <= interactable.radius)
+                        //    {
+                        //        SetFocus();
+                        //    }
+                        //}
                     }
                 }
 
-                if(interactable != null)
-                {
-                    if (Vector3.Distance(transform.position, interactable.interactableTransform.position) >= interactable.radius)
-                    {
-                        RemoveFocus();
-                    }
-                }
+                //if(interactable != null)
+                //{
+                //    if (Vector3.Distance(transform.position, interactable.interactableTransform.position) >= interactable.radius)
+                //    {
+                //        RemoveFocus();
+                //    }
+                //}
             }
 
             #region --------------------Scrolling
@@ -161,8 +171,13 @@ public class Player : PlayerBehavior
             anim.SetFloat("Vertical", Input.GetAxis("Vertical"));
             anim.SetInteger("animState", (int)combatState);
             anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), (float)combatState, 3f * Time.deltaTime));
+        }
+    }
 
-            #region --------------------Networking
+    private void FixedUpdate()
+    {
+        if(networkObject.IsOwner)
+        {
             networkObject.position = transform.position;
             networkObject.rotation = transform.rotation;
 
@@ -170,11 +185,9 @@ public class Player : PlayerBehavior
             networkObject.animvert = anim.GetFloat("Vertical");
 
             networkObject.animstate = (int)combatState;
-            #endregion
         }
-        else if (!networkObject.IsOwner)
+        else if(!networkObject.IsOwner)
         {
-            // Gathering position and rotation from the network
             transform.position = networkObject.position;
             transform.rotation = networkObject.rotation;
 
@@ -186,29 +199,27 @@ public class Player : PlayerBehavior
             anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), (float)networkObject.animstate, 3f * Time.deltaTime));
             return;
         }
+
+        if(transform.position.y <= -100)
+        {
+            transform.position = Vector3.one;
+        }
     }
 
     void SetFocus()
     {
-        interactable.interacted = false;
-        ikControl.FocusOn(interactable.transform);
-        interactable.Interact();
+        //interactable.interacted = false;
+        //ikControl.FocusOn(interactable.transform);
+        //interactable.Interact();
         Debug.Log("Interacting bitch");
     }
 
     void RemoveFocus()
     {
-        interactable.interacted = false;
-        interactable = null;
+        //interactable.interacted = false;
+        //interactable = null;
         ikControl.ResetFocus();
         Debug.Log("No longer interacting");
-    }
-
-    private void FixedUpdate()
-    {
-        mousePos = Input.mousePosition;
-        mousePos.z = 50;
-        mousePos = playerCam.ScreenToWorldPoint(mousePos);
     }
 
     public void Launch()
@@ -226,7 +237,6 @@ public class Player : PlayerBehavior
             }
 
             Debug.Log("Throw time!");
-            //replace with rpc
             throwable.networkStarted += (NetworkBehavior behavior) =>
             {
                 throwable.networkObject.SendRpc(NetThrowablesBehavior.RPC_NETWORK_LAUNCH, Receivers.All, targetPos);
@@ -257,5 +267,10 @@ public class Player : PlayerBehavior
     {
         string triggerID = args.GetNext<string>();
         anim.SetTrigger(triggerID);
+    }
+
+    public override void SubscribeToWorldManager(RpcArgs args)
+    {
+        WorldManager.instance.players.Add(this);
     }
 }

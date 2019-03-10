@@ -1,0 +1,30 @@
+[
+	{
+		"id": 0,
+		"title": "Steel Gloves",
+		"value": 6,
+		"stats": {
+			"power": 1,
+			"defense": 4,
+			"stamina": 2
+		},
+		"description": "Gloves that were coincidentally made from steel.",
+		"stackable": false,
+		"rarity": 1,
+		"slug": "steel_gloves"
+	},
+	{
+		"id": 1,
+		"title": "Axe of the norse Demigod",
+		"value": 6,
+		"stats": {
+			"power": 1,
+			"defense": 4,
+			"stamina": 2
+		},
+		"description": "Axe seems to really be giving you the urge to shout 'BOY' the entire time",
+		"stackable": false,
+		"rarity": 1,
+		"slug": "norse_demigod_axe"
+	}
+]
