@@ -51,7 +51,6 @@ public class DisplaceSnow : MonoBehaviour
 
     void Update()
     {
-        
         if(Physics.Raycast(transform.position, -Vector3.up, out renderHit, 5f, layerMask))
         {
             if (renderHit.transform.gameObject == terrain)

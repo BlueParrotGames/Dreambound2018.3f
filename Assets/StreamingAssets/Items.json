@@ -1,30 +1,39 @@
 [
 	{
 		"id": 0,
-		"title": "Steel Gloves",
+		"title": "Steel Flail",
 		"value": 6,
 		"stats": {
-			"power": 1,
-			"defense": 4,
-			"stamina": 2
+			"strength": 1
+			//"intelligence": 4,
+			//"stamina": 2
 		},
-		"description": "Gloves that were coincidentally made from steel.",
+		"description": "A flail that was coincidentally made from steel.",
 		"stackable": false,
-		"rarity": 1,
-		"slug": "steel_gloves"
+		"rarity": 2,
+		"slug": "steel_flail"
 	},
 	{
 		"id": 1,
-		"title": "Axe of the norse Demigod",
+		"title": "Axe of the Norse Demigod",
 		"value": 6,
 		"stats": {
-			"power": 1,
-			"defense": 4,
-			"stamina": 2
+			"strength": 58,
+			"intelligence": 21,
+			"stamina": 37
 		},
-		"description": "Axe seems to really be giving you the urge to shout 'BOY' the entire time",
+		"description": "Axe seems to really be giving you the urge to shout \"BOI\" the entire time..",
 		"stackable": false,
-		"rarity": 1,
+		"rarity": 5,
 		"slug": "norse_demigod_axe"
+	},
+	{
+		"id": 2,
+		"title": "Apple",
+		"value": 6,
+		"description": "Apple with stats? What?",
+		"stackable": true,
+		"rarity": 1,
+		"slug": "apple"
 	}
 ]
