@@ -7,13 +7,20 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] int inventorySpace = 20;
 
-    [SerializeField] GameObject inventoryPanel;
-    [SerializeField] GameObject slotPanel;
-    [SerializeField] GameObject inventorySlot;
-    [SerializeField] GameObject inventoryItem;
+    public GameObject inventoryPanel;
+    public GameObject slotPanel;
+    public GameObject inventorySlot;
+    public GameObject inventoryItem;
 
     public List<Item> items = new List<Item>();
     public List<GameObject> slots = new List<GameObject>();
+
+    public int slotAmount;
+    public int inventoryCount;
+    public int inventoryMax;
+
+    public bool showInventory = true;
+    public bool inventoryFull = false;
 
     void Start()
     {
@@ -42,39 +49,62 @@ public class Inventory : MonoBehaviour
     public void AddItem(int id)
     {
         Item item = ItemDatabase.instance.FindItemByID(id);
+        if(inventoryCount < inventoryMax)
+        {
+            inventoryFull = false;
 
-        if (item.stackable && FindItemInInventory(item))
-        {
-            for (int i = 0; i < items.Count; i++)
+            if (item.stackable && FindItemInInventory(item))
             {
-                if(items[i].id == id)
+                for (int i = 0; i < items.Count; i++)
                 {
-                    ItemData data = slots[i].transform.GetChild(0).GetComponent<ItemData>();
-                    data.amount += 1;
-                    data.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = (data.amount + 1).ToString();
-                    break;
+                    if(items[i].id == id)
+                    {
+                        ItemData data = slots[i].transform.GetChild(0).GetComponent<ItemData>();
+                        data.amount += 1;
+                        data.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = (data.amount + 1).ToString();
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    if (items[i].title == null)
+                    {
+                        items[i] = item;
+                        GameObject itemObj = Instantiate(inventoryItem, slots[i].transform);
+                        ItemData data = itemObj.GetComponent<ItemData>();
+                        data.item = item;
+                        data.slotIndex = i;
+                        // set data player
+                        // set data player inventory
+                        itemObj.name = item.title;
+                        slots[i].name = itemObj.name + " Slot";
+                        itemObj.name = item.title + " Item";
+                        data.iconRenderer.sprite = item.sprite;
+                        data.rarityRenderer.color = new Color(item.rarityColor.r, item.rarityColor.g, item.rarityColor.b, 0.35294f);
+                        itemObj.transform.localPosition = Vector2.zero;
+
+                        inventoryCount++;
+                        if (inventoryCount == inventoryMax)
+                            inventoryFull = true;
+                        break;
+                    }
                 }
             }
         }
-        else
+        else if(inventoryCount == inventoryMax)
         {
-            for (int i = 0; i < items.Count; i++)
-            {
-                if (items[i].id == -1)
-                {
-                    items[i] = item;
-                    GameObject itemObj = Instantiate(inventoryItem, slots[i].transform);
-                    ItemData data = itemObj.GetComponent<ItemData>();
-                    data.item = item;
-                    data.slotIndex = i;
-                    data.iconRenderer.sprite = item.sprite;
-                    data.rarityRenderer.color = new Color(item.rarityColor.r, item.rarityColor.g, item.rarityColor.b, 0.35294f);
-                    itemObj.transform.localPosition = Vector2.zero;
-                    itemObj.name = item.title;
-                    break;
-                }
-            }
+            inventoryFull = true;
+            Debug.Log("Inventory full");
         }
+
+    }
+
+    public void RemoveItem(int index)
+    {
+        items[index] = new Item();
     }
 
     bool FindItemInInventory(Item item)
