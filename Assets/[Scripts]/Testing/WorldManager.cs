@@ -21,7 +21,7 @@ public class WorldManager : MonoBehaviour
 
         SceneManager.activeSceneChanged += (Scene arg0, Scene arg1) =>
         {
-            Debug.Log("WorldManager caught a scene change!");
+            //Debug.Log("WorldManager caught a scene change!");
             #region cloth reset
             cloths = new List<Cloth>();
 

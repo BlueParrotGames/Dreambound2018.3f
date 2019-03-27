@@ -102,7 +102,7 @@ public class DreamNet : DreamNetBehavior
         //NetworkManager.networkSceneLoaded unreliable
         SceneManager.activeSceneChanged += (Scene arg0, Scene arg1) =>
         {
-            Debug.Log("Initiating game");
+            //Debug.Log("Initiating game");
             //.name should be new scene's name
             if (SceneManager.GetActiveScene().name == "Town")
             {

@@ -31,14 +31,14 @@ public class Equipment : MonoBehaviour
 	}
     #endregion
 
-	private void RemoveWorn ()
+    public void RemoveWorn ()
 	{
 		if (wornClothing == null)
 			return;
 		    Destroy (wornClothing);
 	}
 
-	private void Wear (GameObject clothing)
+	public void Wear (GameObject clothing)
 	{
 		if (clothing == null)
 			return;

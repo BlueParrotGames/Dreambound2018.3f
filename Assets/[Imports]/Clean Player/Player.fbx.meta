@@ -54,6 +54,10 @@ ModelImporter:
     100096: Spine_One
     100098: Spine_Two
     100100: Spine_Zero
+    100102: Nobody_Does_Their_Job
+    100104: Chestplat_o
+    100106: pCube1
+    100108: Pants
     400000: Head
     400002: HeadTop_End
     400004: LeftArm
@@ -105,10 +109,25 @@ ModelImporter:
     400096: Spine_One
     400098: Spine_Two
     400100: Spine_Zero
+    400102: Nobody_Does_Their_Job
+    400104: Chestplat_o
+    400106: pCube1
+    400108: Pants
     2100000: lambert1
+    2100002: lambert2
+    2300000: Nobody_Does_Their_Job
+    3300000: Nobody_Does_Their_Job
     4300000: Mesh
+    4300002: Nobody_Does_Their_Job
+    4300004: Chestplat_o
+    4300006: pCube1
+    4300008: Pants
     9500000: //RootNode
     13700000: Mesh
+    13700002: Nobody_Does_Their_Job
+    13700004: Chestplat_o
+    13700006: pCube1
+    13700008: Pants
     2186277476908879412: ImportLogs
   externalObjects: {}
   materials:

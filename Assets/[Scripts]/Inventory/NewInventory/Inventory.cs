@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] int inventorySpace = 20;
+    public int inventorySpace = 20;
 
     public GameObject inventoryPanel;
     public GameObject slotPanel;
@@ -15,12 +16,19 @@ public class Inventory : MonoBehaviour
     public List<Item> items = new List<Item>();
     public List<GameObject> slots = new List<GameObject>();
 
-    public int slotAmount;
     public int inventoryCount;
-    public int inventoryMax;
 
     public bool showInventory = true;
     public bool inventoryFull = false;
+
+    public ItemDatabase itemDatabase;
+    public GameObject player;
+
+    public SkinnedMeshRenderer avatar;
+    SkinnedMeshRenderer[] currentMeshes;
+
+    public SkinnedMeshRenderer debugMesh;
+
 
     void Start()
     {
@@ -30,26 +38,29 @@ public class Inventory : MonoBehaviour
         if (slotPanel == null)
             slotPanel = GameObject.Find("Inventory Panel/Slot Panel");
 
+        if (itemDatabase == null)
+            itemDatabase = GameManager.instance.GetComponent<ItemDatabase>();
+
         for (int i = 0; i < inventorySpace; i++)
         {
             items.Add(new Item());
             slots.Add(Instantiate(inventorySlot, slotPanel.transform));
-            slots[i].GetComponent<Slot>().index = i;
+            Slot s = slots[i].GetComponent<Slot>();
+            s.index = i;
+            s.player = gameObject;
         }
 
-        AddItem(0);
-        AddItem(1);
-        AddItem(2);
-        AddItem(2);
-        AddItem(2);
-        AddItem(2);
-        AddItem(2);
+        AddItem(3);
+        //Equip();
     }       
-
+    /// <summary>
+    /// Add an item to your inventory.
+    /// </summary>
+    /// <param name="id"></param>
     public void AddItem(int id)
     {
         Item item = ItemDatabase.instance.FindItemByID(id);
-        if(inventoryCount < inventoryMax)
+        if(inventoryCount < inventorySpace)
         {
             inventoryFull = false;
 
@@ -87,20 +98,21 @@ public class Inventory : MonoBehaviour
                         itemObj.transform.localPosition = Vector2.zero;
 
                         inventoryCount++;
-                        if (inventoryCount == inventoryMax)
+                        if (inventoryCount == inventorySpace)
                             inventoryFull = true;
                         break;
                     }
                 }
             }
         }
-        else if(inventoryCount == inventoryMax)
+        else if(inventoryCount == inventorySpace)
         {
             inventoryFull = true;
             Debug.Log("Inventory full");
         }
 
     }
+
 
     public void RemoveItem(int index)
     {
@@ -115,5 +127,60 @@ public class Inventory : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            showInventory = !showInventory;
+
+            inventoryPanel.SetActive(showInventory);
+            //equipmentPanel.SetActive(showInventory);
+        }
+    }
+
+    public void Equip(SkinnedMeshRenderer debugMesh)
+    {
+        SkinnedMeshRenderer characterRenderer = avatar;
+        Dictionary<string, Transform> boneMap = new Dictionary<string, Transform>();
+        foreach (Transform bone in characterRenderer.bones)
+        {
+            boneMap[bone.name] = bone;
+        }
+
+        SkinnedMeshRenderer gearRenderer = Instantiate<SkinnedMeshRenderer>(debugMesh, transform);
+        gearRenderer.updateWhenOffscreen = true;
+        Transform[] boneArray = gearRenderer.bones;
+        for (int i = 0; i < boneArray.Length; ++i)
+        {
+            string boneName = boneArray[i].name;
+            if (!boneMap.TryGetValue(boneName, out boneArray[i]))
+            {
+                Debug.LogWarning("Failed to get bone: " + boneName);
+                //Debug.Break();
+            }
+        }
+
+        gearRenderer.bones = boneArray; //take effect
+        //SkinnedMeshRenderer skinnedMesh = Instantiate<SkinnedMeshRenderer>(tempMesh, transform);
+        //skinnedMesh.transform.parent = targetMesh.transform.parent;
+
+        //skinnedMesh.bones = targetMesh.bones;
+        //skinnedMesh.rootBone = targetMesh.rootBone;
+    }
+}
+
+[CustomEditor(typeof(Inventory))]
+public class InventoryEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        Inventory t = (Inventory)target;
+        if(GUILayout.Button("Equip tempMesh"))
+        {
+            t.Equip(t.debugMesh);
+        }
     }
 }

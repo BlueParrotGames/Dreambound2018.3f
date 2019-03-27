@@ -26,21 +26,24 @@ public class DisplaceSnow : MonoBehaviour
     {
         layerMask = LayerMask.GetMask("Ground");
         drawMaterial = new Material(drawShader);
-        //SetMaterialRenderer();
     }
 
     void SetMaterialRenderer()
     {
-        Debug.Log("Calling Set Material Renderer");
+        //Debug.Log("Calling Set Material Renderer");
         baseMaterial = terrain.GetComponent<MeshRenderer>().material;
-        if (baseMaterial.GetTexture("_Splat") == null)
+
+        if (!baseMaterial.HasProperty("_Splat"))
         {
+            this.enabled = false;
+            return;
+        }
+
+        if (baseMaterial.HasProperty("_Splat") && baseMaterial.GetTexture("_Splat") == null)
             baseMaterial.SetTexture("_Splat", splatmap = new RenderTexture(1024, 1024, 0, RenderTextureFormat.ARGBFloat));
-        }
-        else
-        {
+        else if(baseMaterial.HasProperty("_Splat") && baseMaterial.GetTexture("_Splat") != null)
             splatmap = (RenderTexture)baseMaterial.GetTexture("_Splat");
-        }
+
 
         //GameObject[] terrains = GameObject.FindGameObjectsWithTag("Ground");
 
@@ -63,6 +66,9 @@ public class DisplaceSnow : MonoBehaviour
                 SetMaterialRenderer();
             }
         }
+
+        if (!baseMaterial.HasProperty("_Splat"))
+            return;
 
         for (int i = 0; i < transforms.Length; i++)
         {

@@ -1,3 +1,8 @@
+// WARNING
+//	If you're adding items, make sure to get comma's placed correctly, quotation marks placed correctly. 
+//	If there's an error in this file, the entire inventory system will refuse to load.
+//	Ask a programmer if something goes wrong
+
 [
 	{
 		"id": 0,
@@ -11,7 +16,8 @@
 		"description": "A flail that was coincidentally made from steel.",
 		"stackable": false,
 		"rarity": 2,
-		"slug": "steel_flail"
+		"slug": "steel_flail",
+		"type": "weapon"
 	},
 	{
 		"id": 1,
@@ -25,7 +31,8 @@
 		"description": "Axe seems to really be giving you the urge to shout \"BOI\" the entire time..",
 		"stackable": false,
 		"rarity": 5,
-		"slug": "norse_demigod_axe"
+		"slug": "norse_demigod_axe",
+		"type": "weapon"
 	},
 	{
 		"id": 2,
@@ -34,6 +41,22 @@
 		"description": "Apple with stats? What?",
 		"stackable": true,
 		"rarity": 1,
-		"slug": "apple"
+		"slug": "apple",
+		"type": "consumable"
+	},
+	{
+		"id": 3,
+		"title": "Chestplate of the Rogue",
+		"value": 2016,
+		"stats": {
+			"strength": 48,
+			"intelligence": 7,
+			"stamina": 52
+		},
+		"description": "A strong leather chestplate, full of great benefits..",
+		"stackable": false,
+		"rarity": 4,
+		"slug": "grasslands_cuirass",
+		"type": "chestplate"
 	}
 ]

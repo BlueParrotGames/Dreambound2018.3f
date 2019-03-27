@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using UnityEngine;
+using UnityEditor;
 using System.IO;
 using LitJson;
 
 public class ItemDatabase : MonoBehaviour
 {
-    List<Item> database = new List<Item>();
+    public List<Item> database = new List<Item>();
     JsonData itemData;
 
     public static ItemDatabase instance;
@@ -66,7 +68,8 @@ public class ItemDatabase : MonoBehaviour
                 (string)itemData[i]["description"],
                 (bool)itemData[i]["stackable"],
                 (int)itemData[i]["rarity"],
-                (string)itemData[i]["slug"]
+                (string)itemData[i]["slug"],
+                (string)itemData[i]["type"]
                 );
 
             try
@@ -89,22 +92,30 @@ public class ItemDatabase : MonoBehaviour
     }
 }
 
+[Serializable]
 public class Item
 {
     public int id;
     public string title;
+    public string slug;
+    public string description;
+
     public int value;
     public int strength;
     public int intelligence;
     public int stamina;
-    public string description;
+
     public bool stackable;
+    public string itemType;
+
     public int rarity;
-    public string slug;
-    public Sprite sprite;
     public Color rarityColor;
 
-    public Item(int id, string title, int value, int strength, int intelligence, int stamina, string description, bool stackable, int rarity, string slug)
+    public Sprite sprite;
+    public GameObject itemPrefab;
+    public string hitPower;
+
+    public Item(int id, string title, int value, int strength, int intelligence, int stamina, string description, bool stackable, int rarity, string slug, string itemType)
     {
         this.id = id;
         this.title = title;
@@ -116,7 +127,9 @@ public class Item
         this.stackable = stackable;
         this.rarity = rarity;
         this.slug = slug;
+        this.itemType = itemType;
         this.sprite = Resources.Load<Sprite>("Textures/Item sprites/" + slug);
+        this.itemPrefab = Resources.Load<GameObject>("Items/" + slug);
 
         switch(rarity)
         {
@@ -156,5 +169,31 @@ public class Item
     public Item()
     {
         this.id = -1;
+    }
+}
+
+[CustomPropertyDrawer(typeof(Item))]
+public class ItemEditor : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.PropertyField(position, property, label, true);
+        if (property.isExpanded)
+        {
+            //EditorGUI.PropertyField(position, property, label, true);
+            Rect buttonRect = new Rect(position.xMin + 30f, position.yMax - 20f, position.width - 30f, 20f);
+            if(GUI.Button(buttonRect,"Add me"))
+            {
+                
+            }
+        }
+    }
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        if (property.isExpanded)
+            return EditorGUI.GetPropertyHeight(property) + 20f;
+
+        return EditorGUI.GetPropertyHeight(property);
     }
 }
