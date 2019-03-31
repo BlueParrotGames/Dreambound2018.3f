@@ -23,13 +23,13 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     void Start()
     {
         group = GetComponent<CanvasGroup>();
-        inventory = GameObject.Find("Scene").GetComponent<Inventory>();
+        //inventory = GameObject.Find("Scene").GetComponent<Inventory>();
         tooltip = GameObject.Find("Canvas").GetComponent<Tooltip>();
     }
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(item != null)
+        if(eventData.button == PointerEventData.InputButton.Left && item != null)
         {
             originParent = transform.parent;
             transform.SetParent(transform.parent.parent);
@@ -39,7 +39,7 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (item != null)
+        if (eventData.button == PointerEventData.InputButton.Left && item != null)
         {
             transform.position = eventData.position - offset;
         }
@@ -47,15 +47,28 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.SetParent(inventory.slots[slotIndex].transform);
-        transform.position = inventory.slots[slotIndex].transform.position;
-        group.blocksRaycasts = true;
+        if(eventData.button == PointerEventData.InputButton.Left)
+        {
+            transform.SetParent(Player.instance.inventory.slots[slotIndex].transform);
+            transform.position = Player.instance.inventory.slots[slotIndex].transform.position;
+            group.blocksRaycasts = true;
+        }
+
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        offset = eventData.position - (Vector2)transform.position;
-        transform.position = eventData.position - offset;
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+
+            offset = eventData.position - (Vector2)transform.position;
+            transform.position = eventData.position - offset;
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (item.itemType != "weapon" && item.itemType != "consumable")
+                Player.instance.inventory.Equip(item.mesh);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

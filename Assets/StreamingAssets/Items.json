@@ -3,6 +3,9 @@
 //	If there's an error in this file, the entire inventory system will refuse to load.
 //	Ask a programmer if something goes wrong
 
+// Possible stats: "strength", "intelligence", "stamina";
+// Possible types: "weapon", "consumable", "helmet", "chestplate", "leggings", "boots", "gloves";
+
 [
 	{
 		"id": 0,
@@ -58,5 +61,50 @@
 		"rarity": 4,
 		"slug": "grasslands_cuirass",
 		"type": "chestplate"
+	},
+		{
+		"id": 4,
+		"title": "Boots of the Rogue",
+		"value": 2016,
+		"stats": {
+			"strength": 23,
+			"intelligence": 2,
+			"stamina": 11
+		},
+		"description": "Wow, nice boots dude.",
+		"stackable": false,
+		"rarity": 4,
+		"slug": "grasslands_boots",
+		"type": "boots"
+	},
+		{
+		"id": 5,
+		"title": "Helmet of the Rogue",
+		"value": 2016,
+		"stats": {
+			"strength": 11,
+			"intelligence": 4,
+			"stamina": 17
+		},
+		"description": "A well suited metal helmet to protect your brain-bits.",
+		"stackable": false,
+		"rarity": 4,
+		"slug": "grasslands_helmet",
+		"type": "helmet"
+	},
+		{
+		"id": 6,
+		"title": "Leggings of the Rogue",
+		"value": 2016,
+		"stats": {
+			"strength": 37,
+			"intelligence": 21,
+			"stamina": 34
+		},
+		"description": "Leggings, nice and tight. Good for rolling",
+		"stackable": false,
+		"rarity": 4,
+		"slug": "grasslands_leggings",
+		"type": "leggings"
 	}
 ]

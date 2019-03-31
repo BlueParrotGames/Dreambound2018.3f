@@ -49103,8 +49103,8 @@ MonoBehaviour:
   clothCollider: {fileID: 255}
   freeLook: {fileID: 275356483500891164}
   enableFeetIk: 1
-  heightFromGroundRaycast: 1.14
-  raycastDownDistance: 1.5
+  heightFromGroundRaycast: 2
+  raycastDownDistance: 0.2
   environmentLayer:
     serializedVersion: 2
     m_Bits: 2048
@@ -49119,6 +49119,7 @@ MonoBehaviour:
   VerticalAnimTime: 0.2
   StartAnimTime: 0.3
   StopAnimTime: 0.15
+  inventory: {fileID: 0}
 --- !u!114 &315
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -46,7 +46,6 @@ public class Player : PlayerBehavior
     RaycastHit hit;
     Ray ray;
 
-
     private Vector3 rightFootPosition, leftFootPosition, leftFootIkPosition, rightFootIkPosition;
     private Quaternion leftFootIkRotation, rightFootIkRotation;
     private float lastPelvisPositionY, lastRightFootPositionY, lastLeftFootPositionY;
@@ -79,6 +78,9 @@ public class Player : PlayerBehavior
     private float verticalVel; //Vertical velocity -- currently work in progress
     private Vector3 moveVector; //movement vector -- currently work in progres
 
+    public static Player instance;
+    public Inventory inventory;
+
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -88,6 +90,8 @@ public class Player : PlayerBehavior
 
         gravity = (Physics.gravity.y * 2) * -1;
         freeLook = GetComponentInChildren<CinemachineVirtualCamera>();
+
+        inventory = GetComponent<Inventory>();
     }
 
     public void ResetPosition()
@@ -107,6 +111,7 @@ public class Player : PlayerBehavior
             freeLook.enabled = true;
             networkObject.SendRpc(RPC_SET_PLAYER_NAME, Receivers.AllBuffered, PlayerPrefs.GetString("PlayerName"));
             networkObject.SendRpc(RPC_SUBSCRIBE_TO_WORLD_MANAGER, Receivers.AllBuffered);
+            instance = this;
         }
         else
         {

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using LitJson;
+using System.Reflection;
 
 public class ItemDatabase : MonoBehaviour
 {
@@ -115,6 +116,9 @@ public class Item
     public GameObject itemPrefab;
     public string hitPower;
 
+    // Only assigned for armor
+    public SkinnedMeshRenderer mesh;
+
     public Item(int id, string title, int value, int strength, int intelligence, int stamina, string description, bool stackable, int rarity, string slug, string itemType)
     {
         this.id = id;
@@ -129,9 +133,24 @@ public class Item
         this.slug = slug;
         this.itemType = itemType;
         this.sprite = Resources.Load<Sprite>("Textures/Item sprites/" + slug);
-        this.itemPrefab = Resources.Load<GameObject>("Items/" + slug);
+        string[] seperatedSlug = slug.Split('_');
 
-        switch(rarity)
+        //for (int i = 0; i < seperatedSlug.Length; i++)
+        //    Debug.Log(seperatedSlug[i]);
+
+        if(this.itemType != "weapon" && this.itemType != "consumable")
+        {
+            Debug.Log("I'm armor :D");
+            itemPrefab = Resources.Load<GameObject>("Items/" + seperatedSlug[0]);
+            mesh = itemPrefab.transform.Find(seperatedSlug[1]).GetComponent<SkinnedMeshRenderer>();
+        }
+        else
+        {
+            Debug.Log("I'm not armor :D");
+            this.itemPrefab = Resources.Load<GameObject>("Items/" + slug);
+        }
+
+        switch (rarity)
         {
             case 0:
                 {
@@ -165,7 +184,7 @@ public class Item
                 }
         }
     }
-    
+
     public Item()
     {
         this.id = -1;
@@ -177,14 +196,28 @@ public class ItemEditor : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+
+        
         EditorGUI.PropertyField(position, property, label, true);
         if (property.isExpanded)
         {
             //EditorGUI.PropertyField(position, property, label, true);
             Rect buttonRect = new Rect(position.xMin + 30f, position.yMax - 20f, position.width - 30f, 20f);
-            if(GUI.Button(buttonRect,"Add me"))
+            if(property.serializedObject.targetObject.name == "Game Manager")
             {
-                
+                if (GUI.Button(buttonRect, "Add me"))
+                {
+                    Item item = GetTargetObjectOfProperty(property) as Item;
+                    Debug.Log(item.id);
+                    try
+                    {
+                        Player.instance.inventory.AddItem(item.id);
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.LogError("There's probably no player in the scene!");
+                    }
+                }
             }
         }
     }
@@ -195,5 +228,65 @@ public class ItemEditor : PropertyDrawer
             return EditorGUI.GetPropertyHeight(property) + 20f;
 
         return EditorGUI.GetPropertyHeight(property);
+    }
+
+    public static object GetTargetObjectOfProperty(SerializedProperty prop)
+    {
+        if (prop == null) return null;
+
+        var path = prop.propertyPath.Replace(".Array.data[", "[");
+        object obj = prop.serializedObject.targetObject;
+        var elements = path.Split('.');
+        foreach (var element in elements)
+        {
+            if (element.Contains("["))
+            {
+                var elementName = element.Substring(0, element.IndexOf("["));
+                var index = System.Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
+                obj = GetValue_Imp(obj, elementName, index);
+            }
+            else
+            {
+                obj = GetValue_Imp(obj, element);
+            }
+        }
+        return obj;
+    }
+
+    private static object GetValue_Imp(object source, string name)
+    {
+        if (source == null)
+            return null;
+        var type = source.GetType();
+
+        while (type != null)
+        {
+            var f = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            if (f != null)
+                return f.GetValue(source);
+
+            var p = type.GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+            if (p != null)
+                return p.GetValue(source, null);
+
+            type = type.BaseType;
+        }
+        return null;
+    }
+
+    private static object GetValue_Imp(object source, string name, int index)
+    {
+        var enumerable = GetValue_Imp(source, name) as System.Collections.IEnumerable;
+        if (enumerable == null) return null;
+        var enm = enumerable.GetEnumerator();
+        //while (index-- >= 0)
+        //    enm.MoveNext();
+        //return enm.Current;
+
+        for (int i = 0; i <= index; i++)
+        {
+            if (!enm.MoveNext()) return null;
+        }
+        return enm.Current;
     }
 }

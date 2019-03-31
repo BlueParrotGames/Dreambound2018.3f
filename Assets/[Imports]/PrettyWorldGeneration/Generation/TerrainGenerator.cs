@@ -94,7 +94,7 @@ namespace EnvironmentGeneration
             for (int i = 0; i < transform.childCount; i++)
             {
                 _chunkObjects[i] = transform.GetChild(i).transform;
-                _chunkObjects[i].transform.localPosition = Vector3.zero;
+                //_chunkObjects[i].transform.localPosition = Vector3.zero;
             }
         }
         private HeightMap GetWorldHeightMap()

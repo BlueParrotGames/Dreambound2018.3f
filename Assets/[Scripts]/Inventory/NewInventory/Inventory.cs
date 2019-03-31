@@ -29,7 +29,6 @@ public class Inventory : MonoBehaviour
 
     public SkinnedMeshRenderer debugMesh;
 
-
     void Start()
     {
         if (inventoryPanel == null)
@@ -50,9 +49,9 @@ public class Inventory : MonoBehaviour
             s.player = gameObject;
         }
 
-        AddItem(3);
+        //AddItem(3);
         //Equip();
-    }       
+    }
     /// <summary>
     /// Add an item to your inventory.
     /// </summary>
@@ -110,9 +109,7 @@ public class Inventory : MonoBehaviour
             inventoryFull = true;
             Debug.Log("Inventory full");
         }
-
     }
-
 
     public void RemoveItem(int index)
     {
