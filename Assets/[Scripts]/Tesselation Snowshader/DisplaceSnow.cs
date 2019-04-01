@@ -67,7 +67,7 @@ public class DisplaceSnow : MonoBehaviour
             }
         }
 
-        if (!baseMaterial.HasProperty("_Splat"))
+        if (terrain == null || !baseMaterial.HasProperty("_Splat"))
             return;
 
         for (int i = 0; i < transforms.Length; i++)

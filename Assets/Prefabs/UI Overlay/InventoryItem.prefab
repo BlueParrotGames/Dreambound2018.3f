@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.00000023809207, y: 0.000000596046}
   m_SizeDelta: {x: 15, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7191132800622704112
@@ -326,6 +326,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b716f0d752cc71a4686b9ec6a39540ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item:
+    id: -1
+    title: 
+    slug: 
+    description: 
+    value: 0
+    strength: 0
+    intelligence: 0
+    stamina: 0
+    stackable: 0
+    itemType: 
+    rarity: 0
+    rarityColor: {r: 0, g: 0, b: 0, a: 0}
+    sprite: {fileID: 0}
+    itemPrefab: {fileID: 0}
+    hitPower: 
+    mesh: {fileID: 0}
   amount: 0
   slotIndex: 0
   iconRenderer: {fileID: 1534204731365857392}

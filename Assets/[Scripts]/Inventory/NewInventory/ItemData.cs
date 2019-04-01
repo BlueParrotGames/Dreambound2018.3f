@@ -67,7 +67,7 @@ public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             if (item.itemType != "weapon" && item.itemType != "consumable")
-                Player.instance.inventory.Equip(item.mesh);
+                Player.instance.inventory.Equip(item);
         }
     }
 

@@ -49127,7 +49127,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cab83ec81e505aa4aacabd735d80f381, type: 3}
   m_Name: 
@@ -49151,21 +49151,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySpace: 20
+  inventoryCount: 0
   inventoryPanel: {fileID: 0}
-  slotPanel: {fileID: 0}
   inventorySlot: {fileID: 3332263773914038519, guid: 741fda81a3b0cdf4d8f9e496897738f0,
     type: 3}
   inventoryItem: {fileID: 9036364142758721016, guid: 004521d11b7005c40bc66868ba532dc9,
     type: 3}
+  equipmentPanel: {fileID: 0}
   items: []
   slots: []
-  inventoryCount: 0
   showInventory: 1
   inventoryFull: 0
   itemDatabase: {fileID: 0}
   player: {fileID: 126}
   avatar: {fileID: 256}
-  debugMesh: {fileID: 13700004, guid: ff192dfe8847c9a49b26ea808959eda3, type: 3}
+  equipSlots: []
 --- !u!1 &127
 GameObject:
   m_ObjectHideFlags: 0
@@ -50357,10 +50357,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 207}
     m_Modifications:
-    - target: {fileID: 1370538683, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
-      propertyPath: m_Name
-      value: Small_Shield
-      objectReference: {fileID: 0}
     - target: {fileID: 1370538684, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.011505366
@@ -50404,6 +50400,10 @@ PrefabInstance:
     - target: {fileID: 1370538684, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370538683, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
+      propertyPath: m_Name
+      value: Small_Shield
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd3c38f981bf8945a59dee10f8bd0a1, type: 3}
