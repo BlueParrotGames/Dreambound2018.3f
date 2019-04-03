@@ -2,13 +2,11 @@
 
 namespace Astar.Data
 {
-    public class TerrainType
+    [System.Serializable]
+    public struct TerrainType
     {
-        [SerializeField] private LayerMask _terrainMask;
-        [SerializeField] private int _terrainPenalty;
-
-        public LayerMask TerrainMask { get => _terrainMask; }
-        public int TerrainPenalty { get => _terrainPenalty; }
+        public LayerMask TerrainMask;
+        public int TerrainPenalty;
     }
 }
 

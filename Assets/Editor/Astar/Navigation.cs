@@ -1,20 +1,34 @@
-﻿using System;
-using System.Linq;
-using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using UnityEditor;
+﻿using System.Linq;
 
-using Astar.Editor.Windows;
+using UnityEngine;
+using UnityEditor;
+using UnityEditorInternal;
+using UnityEngine.SceneManagement;
+
+using Astar.Data;
+using Astar.Editor.Data;
+using Astar.Editor.Managers;
+using Astar.Editor.Calculators;
 
 namespace Astar.Editor
 {
     public class Navigation : EditorWindow
     {
+        private Vector2 _scrollPosition;
+
+        //Baking variables
+        private LayerMask _unwalkableMask;
+        private SceneNavigationSettings _navigationSettings;
+
+        //Terrain variables
+        private bool _terrainDropDown;
+        private int[] _terrainLayers;
+        private TerrainType[] _terrainTypes;
+        private TerrainTypeAsset _terrainTypeAsset;
+
+        //Window variables
         private enum WindowType { Baking, Terrain }
-        private WindowType _previousWindow;
-        private Dictionary<WindowType, Window> _windows;
-        private Window _currentWindow;
+        private WindowType _currentWindow;
 
         [MenuItem("Window/AI/A* Navigation")]
         public static void Init()
@@ -22,40 +36,172 @@ namespace Astar.Editor
             Navigation window = (Navigation)EditorWindow.GetWindow(typeof(Navigation), false, "A* Navigation");
             window.Show();
 
-            window.InitializeWindows();
+            window.LoadVariables();
+            window._currentWindow = WindowType.Baking;
         }
-        private void InitializeWindows()
+        private void LoadVariables()
         {
-            _windows = new Dictionary<WindowType, Window>();
-            _windows.Add(WindowType.Baking, new BakingWindow());
-            _windows.Add(WindowType.Terrain, new TerrainWindow());
+            //Load baking variables
+            _navigationSettings = AssetManager.LoadAsset<SceneNavigationSettings>(GetSceneNavigationPath());
+            if (_navigationSettings == null)
+            {
+                _navigationSettings = CreateInstance<SceneNavigationSettings>();
+            }
+            else
+            {
+                _unwalkableMask = _navigationSettings.UnwalkableMask;
+            }
 
-            _previousWindow = WindowType.Baking;
-            LoadWindow(WindowType.Baking);
+            //Load terrain varaiables
+            _terrainTypeAsset = AssetManager.LoadAsset<TerrainTypeAsset>(GetTerrainTypesPath());
+            if (_terrainTypeAsset == null)
+            {
+                _terrainTypeAsset = CreateInstance<TerrainTypeAsset>();
+            }
+            else
+            {
+                if (_terrainTypeAsset.WalkableRegions == null)
+
+                _terrainTypes = _terrainTypeAsset.WalkableRegions;
+            }
+            _terrainTypes = new TerrainType[0];
+            _terrainLayers = new int[0];
         }
 
         private void OnGUI()
         {
+            GUILayout.Space(20f);
+
             //Draw the baking button
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Baking", GUILayout.Height(30)))
-                LoadWindow(WindowType.Baking);
+                _currentWindow = WindowType.Baking;
             else if (GUILayout.Button("Terrain", GUILayout.Height(30)))
-                LoadWindow(WindowType.Terrain);
+                _currentWindow = WindowType.Terrain;
             EditorGUILayout.EndHorizontal();
 
-            _currentWindow.DrawWindow();
+            //Space
+            GUILayout.Space(20f);
+
+            //Surround the current selected window in a scroll view so we can scroll
+            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+            GetDrawWindow(_currentWindow)?.Invoke();
+            GUILayout.EndScrollView();
         }
 
-        private void LoadWindow(WindowType windowType)
+        #region Window Functions
+        private System.Action GetDrawWindow(WindowType windowType)
         {
-            if (_previousWindow != windowType)
-                _windows[_previousWindow] = _currentWindow;
+            switch (windowType)
+            {
+                case WindowType.Baking: return DrawBakingWindow;
+                case WindowType.Terrain: return DrawTerrainWindow;
+            }
 
-            _currentWindow = _windows[windowType];
-            _currentWindow.LoadWindow();
-
-            _previousWindow = windowType;
+            return null;
         }
+        private void DrawBakingWindow()
+        {
+            _unwalkableMask = EditorGUILayout.MaskField("Unwalkable Mask", _unwalkableMask, InternalEditorUtility.layers);
+
+            //Draw the baking button
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Bake Navigation", GUILayout.Height(30)))
+                BakeNavigation();
+            EditorGUILayout.EndHorizontal();
+        }
+        private void DrawTerrainWindow()
+        {
+            _terrainDropDown = EditorGUILayout.Foldout(_terrainDropDown, "Walkable Regions");
+            if (_terrainDropDown)
+            {
+                //Draw the lenght variable and adjust the array inmediately
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(10);
+                int length = _terrainTypes.Length;
+                length = EditorGUILayout.IntField("Length", length);
+                EditTerrainTypesLenght(length);
+                GUILayout.EndHorizontal();
+
+                //Loop through the array
+                for(int i = 0; i < _terrainTypes.Length; i++)
+                {
+                    GUILayout.Space(5);
+
+                    //Draw the label
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Space(20);
+                    GUILayout.Label("Element " + i);
+                    GUILayout.EndHorizontal();
+
+                    //Do the layer selection
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Space(40);
+                    _terrainLayers[i] = EditorGUILayout.Popup("Layer", _terrainLayers[i], InternalEditorUtility.layers);
+                    GUILayout.EndHorizontal();
+                    _terrainTypes[i].TerrainMask = LayerMask.NameToLayer(InternalEditorUtility.layers[_terrainLayers[i]]);
+
+                    //Do the penalty
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Space(40);
+                    _terrainTypes[i].TerrainPenalty = EditorGUILayout.IntField("Penalty", _terrainTypes[i].TerrainPenalty);
+                    GUILayout.EndHorizontal();
+                }
+            }
+
+            //Draw the terrain save button
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Save terrain settings", GUILayout.Height(30)))
+                SaveTerrainTypes();
+            EditorGUILayout.EndHorizontal();
+        }
+        #endregion
+
+        #region Baking Functions
+        private void BakeNavigation()
+        {
+            _navigationSettings = ScriptableObject.CreateInstance<SceneNavigationSettings>();
+            UpdateNavigationSettings();
+
+            //Save the asset
+            AssetManager.SaveAsset(GetSceneNavigationPath(), _navigationSettings);
+        }
+        private void UpdateNavigationSettings()
+        {
+            MeshFilter[] meshFilters = FindObjectsOfType<MeshFilter>().Where(x => GameObjectUtility.GetStaticEditorFlags(x.gameObject) == StaticEditorFlags.NavigationStatic).ToArray();
+            Vector3 worldSize = NavigationWorldSizeCalculator.GetWorldSize(meshFilters);
+
+            _navigationSettings.UpdateValues(_unwalkableMask, worldSize);
+        }
+        private string GetSceneNavigationPath()
+        {
+            string result = "Assets/Resources/Navigation/Scene Settings/";
+            result += "NAV_" + SceneManager.GetActiveScene().name + ".asset";
+
+            return result;
+        }
+        #endregion
+
+        #region Terrain Functions
+        private void SaveTerrainTypes()
+        {
+            _terrainTypeAsset = CreateInstance<TerrainTypeAsset>();
+            _terrainTypeAsset.UpdateValues(_terrainTypes);
+
+            AssetManager.SaveAsset(GetTerrainTypesPath(), _terrainTypeAsset);
+        }
+        private void EditTerrainTypesLenght(int newLength)
+        {
+            TerrainType[] newTerrainTypes = new TerrainType[newLength];
+            int[] newTerrainLayers = new int[newLength];
+
+            System.Array.Copy(_terrainLayers, newTerrainLayers, Mathf.Min(newLength, _terrainLayers.Length));
+            System.Array.Copy(_terrainTypes, newTerrainTypes, Mathf.Min(newLength, _terrainTypes.Length));
+
+            _terrainTypes = newTerrainTypes;
+            _terrainLayers = newTerrainLayers;
+        }
+        private string GetTerrainTypesPath() { return "Assets/Resources/Navigation/TerrainTypes.asset"; }
+        #endregion
     }
 }

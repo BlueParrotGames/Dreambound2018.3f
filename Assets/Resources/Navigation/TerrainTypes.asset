@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1df087f58a2fe06439cc324410d95c7a, type: 3}
-  m_Name: NAV_PathfindingTest
+  m_Script: {fileID: 11500000, guid: dcbb661365cbe3841a977aa6ee6275f1, type: 3}
+  m_Name: TerrainTypes
   m_EditorClassIdentifier: 
-  UnwalkableMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  GridWorldSize: {x: 10, y: 20, z: 30}
+  _walkableRegions:
+  - TerrainMask:
+      serializedVersion: 2
+      m_Bits: 1
+    TerrainPenalty: 1111
