@@ -12,8 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcbb661365cbe3841a977aa6ee6275f1, type: 3}
   m_Name: TerrainTypes
   m_EditorClassIdentifier: 
-  _walkableRegions:
-  - TerrainMask:
-      serializedVersion: 2
-      m_Bits: 1
-    TerrainPenalty: 1111

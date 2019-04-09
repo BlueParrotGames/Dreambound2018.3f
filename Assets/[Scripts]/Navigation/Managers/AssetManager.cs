@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor;
 
-namespace Astar.Editor.Managers
+namespace Astar.Managers
 {
     public class AssetManager
     {

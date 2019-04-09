@@ -6,19 +6,20 @@ using UnityEditorInternal;
 using UnityEngine.SceneManagement;
 
 using Astar.Data;
-using Astar.Editor.Data;
-using Astar.Editor.Managers;
-using Astar.Editor.Calculators;
+using Astar.Managers;
+using Astar.Generators;
+using Astar.Calculators;
 
-namespace Astar.Editor
+namespace Astar
 {
     public class Navigation : EditorWindow
     {
         private Vector2 _scrollPosition;
 
         //Baking variables
-        private LayerMask _unwalkableMask;
         private SceneNavigationSettings _navigationSettings;
+        private float _agentRadius;
+        private float _agentHeight;
 
         //Terrain variables
         private bool _terrainDropDown;
@@ -49,7 +50,8 @@ namespace Astar.Editor
             }
             else
             {
-                _unwalkableMask = _navigationSettings.UnwalkableMask;
+                _agentRadius = _navigationSettings.AgentRadius;
+                _agentHeight = _navigationSettings.AgentHeight;
             }
 
             //Load terrain varaiables
@@ -62,7 +64,7 @@ namespace Astar.Editor
             {
                 if (_terrainTypeAsset.WalkableRegions == null)
 
-                _terrainTypes = _terrainTypeAsset.WalkableRegions;
+                    _terrainTypes = _terrainTypeAsset.WalkableRegions;
             }
             _terrainTypes = new TerrainType[0];
             _terrainLayers = new int[0];
@@ -72,21 +74,14 @@ namespace Astar.Editor
         {
             GUILayout.Space(20f);
 
-            //Draw the baking button
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Baking", GUILayout.Height(30)))
-                _currentWindow = WindowType.Baking;
-            else if (GUILayout.Button("Terrain", GUILayout.Height(30)))
-                _currentWindow = WindowType.Terrain;
-            EditorGUILayout.EndHorizontal();
-
-            //Space
+            _currentWindow = (WindowType)GUILayout.Toolbar((int)_currentWindow, new string[] { "Baking", "Terrain" }, GUILayout.Height(20));
             GUILayout.Space(20f);
 
             //Surround the current selected window in a scroll view so we can scroll
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
             GetDrawWindow(_currentWindow)?.Invoke();
             GUILayout.EndScrollView();
+
         }
 
         #region Window Functions
@@ -102,7 +97,9 @@ namespace Astar.Editor
         }
         private void DrawBakingWindow()
         {
-            _unwalkableMask = EditorGUILayout.MaskField("Unwalkable Mask", _unwalkableMask, InternalEditorUtility.layers);
+            //_unwalkableMask = EditorGUILayout.MaskField("Unwalkable Mask", _unwalkableMask, InternalEditorUtility.layers);
+            _agentRadius = EditorGUILayout.FloatField("Agent Radius", _agentRadius);
+            _agentHeight = EditorGUILayout.FloatField("Agent Height", _agentHeight);
 
             //Draw the baking button
             EditorGUILayout.BeginHorizontal();
@@ -124,7 +121,7 @@ namespace Astar.Editor
                 GUILayout.EndHorizontal();
 
                 //Loop through the array
-                for(int i = 0; i < _terrainTypes.Length; i++)
+                for (int i = 0; i < _terrainTypes.Length; i++)
                 {
                     GUILayout.Space(5);
 
@@ -171,7 +168,8 @@ namespace Astar.Editor
             MeshFilter[] meshFilters = FindObjectsOfType<MeshFilter>().Where(x => GameObjectUtility.GetStaticEditorFlags(x.gameObject) == StaticEditorFlags.NavigationStatic).ToArray();
             Vector3 worldSize = NavigationWorldSizeCalculator.GetWorldSize(meshFilters);
 
-            _navigationSettings.UpdateValues(_unwalkableMask, worldSize);
+            //Set the values
+            _navigationSettings.UpdateValues(worldSize, _agentRadius, _agentHeight);
         }
         private string GetSceneNavigationPath()
         {
@@ -188,6 +186,7 @@ namespace Astar.Editor
             _terrainTypeAsset = CreateInstance<TerrainTypeAsset>();
             _terrainTypeAsset.UpdateValues(_terrainTypes);
 
+            //Save the asset
             AssetManager.SaveAsset(GetTerrainTypesPath(), _terrainTypeAsset);
         }
         private void EditTerrainTypesLenght(int newLength)

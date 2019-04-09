@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/[Scenes]/Networking/Forge/ForgeMenu.unity
     guid: efe644dec95c07b4797b5c5f433e59d6
-  - enabled: 0
+  - enabled: 1
     path: Assets/[Scenes]/Networking/Test Level.unity
     guid: fc5026af5a2d40a40a2645219206cc9b
-  - enabled: 1
+  - enabled: 0
     path: Assets/[Scenes]/ALPHA/Town.unity
     guid: 8dc5941b19650af4fa5e67fce6d84954
   - enabled: 1

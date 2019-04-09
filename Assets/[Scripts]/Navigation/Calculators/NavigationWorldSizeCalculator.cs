@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Astar.Editor.Calculators
+namespace Astar.Calculators
 {
     public class NavigationWorldSizeCalculator
     {
